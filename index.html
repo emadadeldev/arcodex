@@ -72,84 +72,83 @@
     </footer>
 
 
+    <script>
+    (() => {
+        const gamesGrid = document.getElementById("gamesGrid");
 
-<script>
-(() => {
-    const gamesGrid = document.getElementById("gamesGrid");
+        const escapeHTML = text => {
+            const div = document.createElement("div");
+            div.textContent = text ?? "";
+            return div.innerHTML;
+        };
 
-    const escapeHTML = text => {
-        const div = document.createElement("div");
-        div.textContent = text ?? "";
-        return div.innerHTML;
-    };
+        async function loadGames() {
+            try {
+                const response = await fetch("api/database.json", {
+                    cache: "force-cache"
+                });
 
-    async function loadGames() {
-        try {
-            const response = await fetch("api.json", {
-                cache: "force-cache"
-            });
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
+                const games = await response.json();
 
-            const games = await response.json();
+                if (!Array.isArray(games) || !games.length) {
+                    throw new Error("Empty API");
+                }
 
-            if (!Array.isArray(games) || !games.length) {
-                throw new Error("Empty API");
-            }
+                const fragment = document.createDocumentFragment();
 
-            const fragment = document.createDocumentFragment();
+                for (const game of games) {
+                    const ports = Array.isArray(game.port)
+                        ? game.port.join(" / ")
+                        : "";
 
-            for (const game of games) {
-                const ports = Array.isArray(game.port)
-                    ? game.port.join(" / ")
-                    : "";
+                    const card = document.createElement("article");
+                    card.className = "game-card";
 
-                const card = document.createElement("article");
-                card.className = "game-card";
+                    card.innerHTML = `
+                        <div class="poster">
+                            <img
+                                src="${escapeHTML(game.cover)}"
+                                alt="${escapeHTML(game.title)}"
+                                loading="lazy"
+                                decoding="async"
+                            >
 
-                card.innerHTML = `
-                    <div class="poster">
-                        <img
-                            src="${escapeHTML(game.cover)}"
-                            alt="${escapeHTML(game.title)}"
-                            loading="lazy"
-                            decoding="async"
-                        >
+                            <span class="port">${escapeHTML(ports)}</span>
+                        </div>
 
-                        <span class="port">${escapeHTML(ports)}</span>
-                    </div>
+                        <div class="game-info">
+                            <h3>${escapeHTML(game.title)}</h3>
 
-                    <div class="game-info">
-                        <h3>${escapeHTML(game.title)}</h3>
+                            <p class="game-description">
+                                ${escapeHTML(game.Description)}
+                            </p>
+                        </div>
+                    `;
 
-                        <p class="game-description">
-                            ${escapeHTML(game.Description)}
-                        </p>
+                    fragment.appendChild(card);
+                }
+
+                gamesGrid.replaceChildren(fragment);
+
+            } catch (error) {
+                console.error("API:", error);
+
+                gamesGrid.innerHTML = `
+                    <div class="api-error">
+                        لا توجد تعريبات متاحة حالياً.
+                        يرجى المحاولة لاحقاً.
                     </div>
                 `;
-
-                fragment.appendChild(card);
             }
-
-            gamesGrid.replaceChildren(fragment);
-
-        } catch (error) {
-            console.error("API:", error);
-
-            gamesGrid.innerHTML = `
-                <div class="api-error">
-                    لا توجد تعريبات متاحة حالياً.
-                    يرجى المحاولة لاحقاً.
-                </div>
-            `;
         }
-    }
 
-    loadGames();
-})();
-</script>
+        loadGames();
+    })();
+    </script>
 
 
 </body>
