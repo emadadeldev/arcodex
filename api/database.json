@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Red Dead Redemption 2",
+        "Description": "West",
+        "cover": "https://assets.vg247.com/current//2018/05/red_dead_redemption_2_cover_art_1.jpg",
+        "port": [
+            "PC",
+            "PS4",
+            "PS5"
+        ],
+        "downloadlink": "",
+        "downloadble": false
+    }
+]
