@@ -1,977 +1,538 @@
 (() => {
+  /*
+   * =====================================================
+   * CONFIG
+   * =====================================================
+   */
 
-    /*
-     * =====================================================
-     * CONFIG
-     * =====================================================
-     */
+  const LIKE_API = "https://arcodex.emadadeldev.workers.dev/likes";
 
-    const LIKE_API =
-        "https://arcodex.emadadeldev.workers.dev/likes";
+  const SITE_URL = "https://emadadeldev.github.io/arcodex";
 
-    const SITE_URL =
-        "https://emadadeldev.github.io/arcodex";
+  const DEFAULT_IMAGE = `${SITE_URL}/assets/logo.png`;
 
-    const DEFAULT_IMAGE =
-        `${SITE_URL}/assets/logo.png`;
+  /*
+   * =====================================================
+   * URL
+   * =====================================================
+   */
 
+  const slug = window.location.search.startsWith("?=")
+    ? window.location.search.substring(2)
+    : null;
 
-    /*
-     * =====================================================
-     * URL
-     * =====================================================
-     */
+  /*
+   * No game specified
+   */
 
-    const slug =
-        window.location.search.startsWith("?=")
-            ? window.location.search.substring(2)
-            : null;
+  if (!slug) {
+    showError();
 
+    return;
+  }
 
-    /*
-     * No game specified
-     */
+  /*
+   * =====================================================
+   * LOAD DATABASE
+   * =====================================================
+   */
 
-    if (!slug) {
+  async function loadGame() {
+    try {
+      const response = await fetch("api/database.json", {
+        cache: "force-cache",
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const games = await response.json();
+
+      if (!Array.isArray(games)) {
+        throw new Error("Invalid database");
+      }
+
+      const game = games.find((item) => item.slug === slug);
+
+      if (!game) {
         showError();
 
         return;
+      }
 
+      renderGame(game);
+    } catch (error) {
+      console.error("GAME API:", error);
+
+      showError();
+    }
+  }
+
+  /*
+   * =====================================================
+   * RENDER GAME
+   * =====================================================
+   */
+
+  function renderGame(game) {
+    updateSEO(game);
+
+    /*
+     * TITLE
+     */
+
+    document.querySelector(".game-heading h1").textContent = game.title || "";
+
+    /*
+     * DEVELOPER
+     */
+
+    document.querySelector(".developer").textContent = game.developer || "";
+
+    /*
+     * PLATFORMS
+     */
+
+    const genres = document.querySelector(".genres");
+
+    genres.replaceChildren();
+
+    if (Array.isArray(game.port)) {
+      const fragment = document.createDocumentFragment();
+
+      for (const port of game.port) {
+        const span = document.createElement("span");
+
+        span.textContent = port;
+
+        fragment.appendChild(span);
+      }
+
+      genres.appendChild(fragment);
     }
 
+    /*
+     * COVER
+     */
+
+    const poster = document.querySelector(".poster img");
+
+    poster.src = game.cover || "";
+
+    poster.alt = game.title || "";
+
+    /*
+     * BACKGROUND
+     */
+
+    setGameBackground(game.cover);
+
+    /*
+     * DESCRIPTION
+     */
+
+    const description = document.querySelector(".description");
+
+    description.textContent = game.Description || "";
 
     /*
      * =====================================================
-     * LOAD DATABASE
+     * PROGRESS
      * =====================================================
      */
+    const progressBar = document.querySelector(".progbar");
 
-    async function loadGame() {
+    if (progressBar) {
+      const progress = Number(game.complate);
 
-        try {
-
-            const response =
-                await fetch(
-                    "api/database.json",
-                    {
-                        cache: "force-cache"
-                    }
-                );
-
-            if (!response.ok) {
-
-                throw new Error(
-                    `HTTP ${response.status}`
-                );
-
-            }
-
-            const games =
-                await response.json();
-
-            if (!Array.isArray(games)) {
-
-                throw new Error(
-                    "Invalid database"
-                );
-
-            }
-
-            const game =
-                games.find(
-                    item =>
-                        item.slug === slug
-                );
-
-            if (!game) {
-
-                showError();
-
-                return;
-
-            }
-
-            renderGame(game);
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "GAME API:",
-                error
-            );
-
-            showError();
-
-        }
-
+      if (
+        game.complate === "" ||
+        !Number.isFinite(progress) ||
+        progress >= 100
+      ) {
+        progressBar.style.display = "none";
+      } else {
+        progressBar.style.display = "";
+        progressBar.value = Math.min(100, Math.max(0, progress));
+      }
     }
 
-
     /*
-     * =====================================================
-     * RENDER GAME
-     * =====================================================
+     * SOCIAL LINKS
      */
 
-    function renderGame(game) {
+    renderSocialLinks(game);
 
-        updateSEO(game);
+    /*
+     * SCREENSHOTS
+     */
 
+    renderScreenshots(game);
 
-        /*
-         * TITLE
-         */
+    /*
+     * DOWNLOAD
+     */
 
-        document
-            .querySelector(
-                ".game-heading h1"
-            )
-            .textContent =
-                game.title || "";
+    const downloadButton = document.querySelector(".download-button");
 
+    if (game.downloadble === true && game.downloadlink) {
+      downloadButton.style.display = "inline-flex";
 
-        /*
-         * DEVELOPER
-         */
-
-        document
-            .querySelector(
-                ".developer"
-            )
-            .textContent =
-                game.developer || "";
-
-
-        /*
-         * PLATFORMS
-         */
-
-        const genres =
-            document.querySelector(
-                ".genres"
-            );
-
-        genres.replaceChildren();
-
-        if (
-            Array.isArray(
-                game.port
-            )
-        ) {
-
-            const fragment =
-                document.createDocumentFragment();
-
-            for (
-                const port
-                of game.port
-            ) {
-
-                const span =
-                    document.createElement(
-                        "span"
-                    );
-
-                span.textContent =
-                    port;
-
-                fragment.appendChild(
-                    span
-                );
-
-            }
-
-            genres.appendChild(
-                fragment
-            );
-
-        }
-
-
-        /*
-         * COVER
-         */
-
-        const poster =
-            document.querySelector(
-                ".poster img"
-            );
-
-        poster.src =
-            game.cover || "";
-
-        poster.alt =
-            game.title || "";
-
-
-        /*
-         * BACKGROUND
-         */
-
-        setGameBackground(
-            game.cover
-        );
-
-
-        /*
-         * DESCRIPTION
-         */
-
-        const description =
-            document.querySelector(
-                ".description"
-            );
-
-        description.textContent =
-            game.Description || "";
-
-
-        /*
-         * SOCIAL LINKS
-         */
-
-        renderSocialLinks(
-            game
-        );
-
-
-        /*
-         * SCREENSHOTS
-         */
-
-        renderScreenshots(
-            game
-        );
-
-
-        /*
-         * DOWNLOAD
-         */
-
-        const downloadButton =
-            document.querySelector(
-                ".download-button"
-            );
-
-        if (
-            game.downloadble === true &&
-            game.downloadlink
-        ) {
-
-            downloadButton.style.display =
-                "inline-flex";
-
-            downloadButton.onclick =
-                () => {
-
-                    window.location.href =
-                        game.downloadlink;
-
-                };
-
-        }
-
-        else {
-
-            downloadButton.style.display =
-                "none";
-
-        }
-
-
-        /*
-         * SHARE
-         */
-
-        setupShareButton(
-            game
-        );
-
-
-        /*
-         * LIKE
-         */
-
-        setupLikeButton(
-            game
-        );
-
+      downloadButton.onclick = () => {
+        window.location.href = game.downloadlink;
+      };
+    } else {
+      downloadButton.style.display = "none";
     }
 
-
     /*
-     * =====================================================
-     * GAME BACKGROUND
-     * =====================================================
+     * SHARE
      */
 
-    function setGameBackground(
-        imageUrl
-    ) {
+    setupShareButton(game);
 
-        const background =
-            document.querySelector(
-                ".game-background-image"
-            );
+    /*
+     * LIKE
+     */
 
-        if (
-            !background ||
-            !imageUrl
-        ) {
+    setupLikeButton(game);
+  }
 
-            return;
+  /*
+   * =====================================================
+   * GAME BACKGROUND
+   * =====================================================
+   */
 
-        }
+  function setGameBackground(imageUrl) {
+    const background = document.querySelector(".game-background-image");
 
-        const image =
-            new Image();
-
-        image.onload =
-            () => {
-
-                background.style.backgroundImage =
-                    `url("${imageUrl}")`;
-
-                requestAnimationFrame(
-                    () => {
-
-                        background.classList.add(
-                            "visible"
-                        );
-
-                    }
-                );
-
-            };
-
-        image.onerror =
-            () => {
-
-                background.classList.remove(
-                    "visible"
-                );
-
-            };
-
-        image.src =
-            imageUrl;
-
+    if (!background || !imageUrl) {
+      return;
     }
 
+    const image = new Image();
 
-    /*
-     * =====================================================
-     * SEO
-     * =====================================================
-     */
+    image.onload = () => {
+      background.style.backgroundImage = `url("${imageUrl}")`;
 
-    function updateSEO(
-        game
-    ) {
+      requestAnimationFrame(() => {
+        background.classList.add("visible");
+      });
+    };
 
-        const gameTitle =
-            game.title ||
-            "ARCODEX";
+    image.onerror = () => {
+      background.classList.remove("visible");
+    };
 
-        const developer =
-            game.developer ||
-            "";
+    image.src = imageUrl;
+  }
 
-        const gameDescription =
-            cleanDescription(
-                game.Description ||
-                `تعريب لعبة ${gameTitle} باللغة العربية على ARCODEX.`
-            );
+  /*
+   * =====================================================
+   * SEO
+   * =====================================================
+   */
 
-        const keywords = [
-            gameTitle,
-            developer,
-            `تعريب ${gameTitle}`,
-            `ترجمة ${gameTitle}`,
-            `${gameTitle} عربي`,
-            "تعريبات",
-            "تعريب ألعاب",
-            "ترجمة ألعاب",
-            "ARCODEX"
-        ]
-            .filter(Boolean)
-            .join(", ");
+  function updateSEO(game) {
+    const gameTitle = game.title || "ARCODEX";
 
+    const developer = game.developer || "";
 
-        const gameUrl =
-            `${SITE_URL}/game.html?=${encodeURIComponent(game.slug)}`;
+    const gameDescription = cleanDescription(
+      game.Description || `تعريب لعبة ${gameTitle} باللغة العربية على ARCODEX.`,
+    );
 
+    const keywords = [
+      gameTitle,
+      developer,
+      `تعريب ${gameTitle}`,
+      `ترجمة ${gameTitle}`,
+      `${gameTitle} عربي`,
+      "تعريبات",
+      "تعريب ألعاب",
+      "ترجمة ألعاب",
+      "ARCODEX",
+    ]
+      .filter(Boolean)
+      .join(", ");
 
-        let gameImage =
-            DEFAULT_IMAGE;
+    const gameUrl = `${SITE_URL}/game.html?=${encodeURIComponent(game.slug)}`;
 
-        if (game.cover) {
+    let gameImage = DEFAULT_IMAGE;
 
-            try {
+    if (game.cover) {
+      try {
+        gameImage = new URL(game.cover, window.location.href).href;
+      } catch (error) {
+        console.error("SEO IMAGE:", error);
+      }
+    }
 
-                gameImage =
-                    new URL(
-                        game.cover,
-                        window.location.href
-                    ).href;
+    document.title = `${gameTitle} - ARCODEX`;
 
-            }
+    setMeta('meta[name="description"]', gameDescription);
 
-            catch (error) {
+    setMeta('meta[name="keywords"]', keywords);
 
-                console.error(
-                    "SEO IMAGE:",
-                    error
-                );
+    setLink('link[rel="canonical"]', gameUrl);
 
-            }
+    setMeta('meta[property="og:title"]', `${gameTitle} - ARCODEX`);
 
+    setMeta('meta[property="og:description"]', gameDescription);
+
+    setMeta('meta[property="og:url"]', gameUrl);
+
+    setMeta('meta[property="og:image"]', gameImage);
+
+    setMeta('meta[property="og:image:alt"]', gameTitle);
+
+    setMeta('meta[name="twitter:title"]', `${gameTitle} - ARCODEX`);
+
+    setMeta('meta[name="twitter:description"]', gameDescription);
+
+    setMeta('meta[name="twitter:image"]', gameImage);
+
+    setMeta('meta[name="twitter:image:alt"]', gameTitle);
+
+    updateStructuredData({
+      title: gameTitle,
+
+      description: gameDescription,
+
+      url: gameUrl,
+
+      image: gameImage,
+
+      developer: developer,
+
+      platform: Array.isArray(game.port) ? game.port : [],
+    });
+  }
+
+  /*
+   * =====================================================
+   * SET META
+   * =====================================================
+   */
+
+  function setMeta(selector, value) {
+    const element = document.querySelector(selector);
+
+    if (!element) {
+      return;
+    }
+
+    element.setAttribute("content", value);
+  }
+
+  /*
+   * =====================================================
+   * SET LINK
+   * =====================================================
+   */
+
+  function setLink(selector, value) {
+    const element = document.querySelector(selector);
+
+    if (!element) {
+      return;
+    }
+
+    element.setAttribute("href", value);
+  }
+
+  /*
+   * =====================================================
+   * CLEAN DESCRIPTION
+   * =====================================================
+   */
+
+  function cleanDescription(text) {
+    return String(text).replace(/\s+/g, " ").trim().slice(0, 300);
+  }
+
+  /*
+   * =====================================================
+   * STRUCTURED DATA
+   * =====================================================
+   */
+
+  function updateStructuredData(data) {
+    const schema = document.querySelector("#game-schema");
+
+    if (!schema) {
+      return;
+    }
+
+    const json = {
+      "@context": "https://schema.org",
+
+      "@type": "VideoGame",
+
+      name: data.title,
+
+      description: data.description,
+
+      url: data.url,
+
+      image: data.image,
+
+      inLanguage: "ar",
+    };
+
+    if (data.developer) {
+      json.author = {
+        "@type": "Organization",
+
+        name: data.developer,
+      };
+    }
+
+    if (Array.isArray(data.platform) && data.platform.length) {
+      json.gamePlatform = data.platform;
+    }
+
+    schema.textContent = JSON.stringify(json);
+  }
+
+  /*
+   * =====================================================
+   * SHARE
+   * =====================================================
+   */
+
+  function setupShareButton(game) {
+    const shareButton = document.querySelector(".magnet-button");
+
+    shareButton.onclick = async () => {
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: game.title,
+
+            text: game.Description || "",
+
+            url: window.location.href,
+          });
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+
+          shareButton.textContent = "تم نسخ الرابط";
+
+          setTimeout(() => {
+            shareButton.textContent = "مشاركة";
+          }, 2000);
         }
+      } catch (error) {
+        console.error("Share:", error);
+      }
+    };
+  }
 
+  /*
+   * =====================================================
+   * LIKE
+   * =====================================================
+   */
 
-        document.title =
-            `${gameTitle} - ARCODEX`;
+  function setupLikeButton(game) {
+    const likeButton = document.querySelector(".like-button");
 
+    const likeCount = likeButton.querySelector(".like-count");
 
-        setMeta(
-            'meta[name="description"]',
-            gameDescription
-        );
+    const likeText = likeButton.querySelector(".like-text");
 
+    loadLikes(game, likeCount);
 
-        setMeta(
-            'meta[name="keywords"]',
-            keywords
-        );
+    likeButton.onclick = async () => {
+      if (likeButton.disabled) {
+        return;
+      }
 
+      likeButton.disabled = true;
 
-        setLink(
-            'link[rel="canonical"]',
-            gameUrl
-        );
+      try {
+        const response = await fetch(LIKE_API, {
+          method: "POST",
 
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-        setMeta(
-            'meta[property="og:title"]',
-            `${gameTitle} - ARCODEX`
-        );
-
-
-        setMeta(
-            'meta[property="og:description"]',
-            gameDescription
-        );
-
-
-        setMeta(
-            'meta[property="og:url"]',
-            gameUrl
-        );
-
-
-        setMeta(
-            'meta[property="og:image"]',
-            gameImage
-        );
-
-
-        setMeta(
-            'meta[property="og:image:alt"]',
-            gameTitle
-        );
-
-
-        setMeta(
-            'meta[name="twitter:title"]',
-            `${gameTitle} - ARCODEX`
-        );
-
-
-        setMeta(
-            'meta[name="twitter:description"]',
-            gameDescription
-        );
-
-
-        setMeta(
-            'meta[name="twitter:image"]',
-            gameImage
-        );
-
-
-        setMeta(
-            'meta[name="twitter:image:alt"]',
-            gameTitle
-        );
-
-
-        updateStructuredData({
-
-            title:
-                gameTitle,
-
-            description:
-                gameDescription,
-
-            url:
-                gameUrl,
-
-            image:
-                gameImage,
-
-            developer:
-                developer,
-
-            platform:
-                Array.isArray(game.port)
-                    ? game.port
-                    : []
-
+          body: JSON.stringify({
+            slug: game.slug,
+          }),
         });
 
-    }
-
-
-    /*
-     * =====================================================
-     * SET META
-     * =====================================================
-     */
-
-    function setMeta(
-        selector,
-        value
-    ) {
-
-        const element =
-            document.querySelector(
-                selector
-            );
-
-        if (!element) {
-
-            return;
-
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
         }
 
-        element.setAttribute(
-            "content",
-            value
-        );
+        const data = await response.json();
 
+        likeCount.textContent = data.likes ?? 0;
+
+        likeButton.classList.add("liked");
+
+        likeText.textContent = "أعجبني";
+      } catch (error) {
+        console.error("LIKE API:", error);
+      } finally {
+        likeButton.disabled = false;
+      }
+    };
+  }
+
+  /*
+   * =====================================================
+   * LOAD LIKES
+   * =====================================================
+   */
+
+  async function loadLikes(game, likeCount) {
+    try {
+      const response = await fetch(
+        `${LIKE_API}?slug=${encodeURIComponent(game.slug)}`,
+        {
+          method: "GET",
+
+          cache: "no-store",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      likeCount.textContent = data.likes ?? 0;
+    } catch (error) {
+      console.error("LOAD LIKES:", error);
+
+      likeCount.textContent = "0";
+    }
+  }
+
+  /*
+   * =====================================================
+   * SOCIAL LINKS
+   * =====================================================
+   */
+
+  function renderSocialLinks(game) {
+    const container = document.querySelector(".social-links");
+
+    container.replaceChildren();
+
+    if (!game.links || typeof game.links !== "object") {
+      return;
     }
 
-
-    /*
-     * =====================================================
-     * SET LINK
-     * =====================================================
-     */
-
-    function setLink(
-        selector,
-        value
-    ) {
-
-        const element =
-            document.querySelector(
-                selector
-            );
-
-        if (!element) {
-
-            return;
-
-        }
-
-        element.setAttribute(
-            "href",
-            value
-        );
-
-    }
-
-
-    /*
-     * =====================================================
-     * CLEAN DESCRIPTION
-     * =====================================================
-     */
-
-    function cleanDescription(
-        text
-    ) {
-
-        return String(text)
-            .replace(/\s+/g, " ")
-            .trim()
-            .slice(0, 300);
-
-    }
-
-
-    /*
-     * =====================================================
-     * STRUCTURED DATA
-     * =====================================================
-     */
-
-    function updateStructuredData(
-        data
-    ) {
-
-        const schema =
-            document.querySelector(
-                "#game-schema"
-            );
-
-        if (!schema) {
-
-            return;
-
-        }
-
-        const json = {
-
-            "@context":
-                "https://schema.org",
-
-            "@type":
-                "VideoGame",
-
-            "name":
-                data.title,
-
-            "description":
-                data.description,
-
-            "url":
-                data.url,
-
-            "image":
-                data.image,
-
-            "inLanguage":
-                "ar"
-
-        };
-
-
-        if (data.developer) {
-
-            json.author = {
-
-                "@type":
-                    "Organization",
-
-                "name":
-                    data.developer
-
-            };
-
-        }
-
-
-        if (
-            Array.isArray(
-                data.platform
-            ) &&
-            data.platform.length
-        ) {
-
-            json.gamePlatform =
-                data.platform;
-
-        }
-
-
-        schema.textContent =
-            JSON.stringify(
-                json
-            );
-
-    }
-
-    /*
-     * =====================================================
-     * SHARE
-     * =====================================================
-     */
-
-    function setupShareButton(
-        game
-    ) {
-
-        const shareButton =
-            document.querySelector(
-                ".magnet-button"
-            );
-
-        shareButton.onclick =
-            async () => {
-
-                try {
-
-                    if (
-                        navigator.share
-                    ) {
-
-                        await navigator.share({
-
-                            title:
-                                game.title,
-
-                            text:
-                                game.Description || "",
-
-                            url:
-                                window.location.href
-
-                        });
-
-                    }
-
-                    else {
-
-                        await navigator.clipboard
-                            .writeText(
-                                window.location.href
-                            );
-
-                        shareButton.textContent =
-                            "تم نسخ الرابط";
-
-                        setTimeout(
-                            () => {
-
-                                shareButton.textContent =
-                                    "مشاركة";
-
-                            },
-                            2000
-                        );
-
-                    }
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        "Share:",
-                        error
-                    );
-
-                }
-
-            };
-
-    }
-
-
-    /*
-     * =====================================================
-     * LIKE
-     * =====================================================
-     */
-
-    function setupLikeButton(
-        game
-    ) {
-
-        const likeButton =
-            document.querySelector(
-                ".like-button"
-            );
-
-        const likeCount =
-            likeButton.querySelector(
-                ".like-count"
-            );
-
-        const likeText =
-            likeButton.querySelector(
-                ".like-text"
-            );
-
-        loadLikes(
-            game,
-            likeCount
-        );
-
-        likeButton.onclick =
-            async () => {
-
-                if (
-                    likeButton.disabled
-                ) {
-
-                    return;
-
-                }
-
-                likeButton.disabled =
-                    true;
-
-                try {
-
-                    const response =
-                        await fetch(
-                            LIKE_API,
-                            {
-                                method:
-                                    "POST",
-
-                                headers: {
-
-                                    "Content-Type":
-                                        "application/json"
-
-                                },
-
-                                body:
-                                    JSON.stringify({
-
-                                        slug:
-                                            game.slug
-
-                                    })
-
-                            }
-                        );
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            `HTTP ${response.status}`
-                        );
-
-                    }
-
-                    const data =
-                        await response.json();
-
-                    likeCount.textContent =
-                        data.likes ?? 0;
-
-                    likeButton.classList.add(
-                        "liked"
-                    );
-
-                    likeText.textContent =
-                        "أعجبني";
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        "LIKE API:",
-                        error
-                    );
-
-                }
-
-                finally {
-
-                    likeButton.disabled =
-                        false;
-
-                }
-
-            };
-
-    }
-
-
-    /*
-     * =====================================================
-     * LOAD LIKES
-     * =====================================================
-     */
-
-    async function loadLikes(
-        game,
-        likeCount
-    ) {
-
-        try {
-
-            const response =
-                await fetch(
-                    `${LIKE_API}?slug=${encodeURIComponent(game.slug)}`,
-                    {
-                        method:
-                            "GET",
-
-                        cache:
-                            "no-store"
-                    }
-                );
-
-            if (!response.ok) {
-
-                throw new Error(
-                    `HTTP ${response.status}`
-                );
-
-            }
-
-            const data =
-                await response.json();
-
-            likeCount.textContent =
-                data.likes ?? 0;
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "LOAD LIKES:",
-                error
-            );
-
-            likeCount.textContent =
-                "0";
-
-        }
-
-    }
-
-
-    /*
-     * =====================================================
-     * SOCIAL LINKS
-     * =====================================================
-     */
-
-    function renderSocialLinks(
-        game
-    ) {
-
-        const container =
-            document.querySelector(
-                ".social-links"
-            );
-
-        container.replaceChildren();
-
-        if (
-            !game.links ||
-            typeof game.links !== "object"
-        ) {
-
-            return;
-
-        }
-
-        const icons = {
-
-            github: `
+    const icons = {
+      github: `
 
                 <svg
                     viewBox="0 0 24 24"
@@ -986,7 +547,7 @@
 
             `,
 
-            x: `
+      x: `
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1000,7 +561,7 @@
                 </svg>
 
             `,
-            discord: `
+      discord: `
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1013,160 +574,80 @@
 
                 </svg>
 
-            `
+            `,
+    };
 
-        };
+    for (const [name, url] of Object.entries(game.links)) {
+      if (!url || !icons[name]) {
+        continue;
+      }
 
+      const link = document.createElement("a");
 
-        for (
-            const [
-                name,
-                url
-            ]
-            of Object.entries(
-                game.links
-            )
-        ) {
+      link.href = url;
 
-            if (
-                !url ||
-                !icons[name]
-            ) {
+      link.target = "_blank";
 
-                continue;
+      link.rel = "noopener noreferrer";
 
-            }
+      link.title = name.toUpperCase();
 
-            const link =
-                document.createElement(
-                    "a"
-                );
+      link.setAttribute("aria-label", name);
 
-            link.href =
-                url;
+      link.innerHTML = icons[name];
 
-            link.target =
-                "_blank";
+      container.appendChild(link);
+    }
+  }
 
-            link.rel =
-                "noopener noreferrer";
+  /*
+   * =====================================================
+   * SCREENSHOTS
+   * =====================================================
+   */
 
-            link.title =
-                name.toUpperCase();
+  function renderScreenshots(game) {
+    const container = document.querySelector("#screenshots");
 
-            link.setAttribute(
-                "aria-label",
-                name
-            );
+    container.replaceChildren();
 
-            link.innerHTML =
-                icons[name];
-
-            container.appendChild(
-                link
-            );
-
-        }
-
+    if (!game.screenshots || typeof game.screenshots !== "object") {
+      return;
     }
 
+    const images = Array.isArray(game.screenshots.images)
+      ? game.screenshots.images
+      : [];
 
-    /*
-     * =====================================================
-     * SCREENSHOTS
-     * =====================================================
-     */
+    const trailer = game.screenshots.trailer || "";
 
-    function renderScreenshots(
-        game
-    ) {
+    if (!images.length && !trailer) {
+      return;
+    }
 
-        const container =
-            document.querySelector(
-                "#screenshots"
-            );
+    images.forEach((imageUrl, index) => {
+      if (!imageUrl || typeof imageUrl !== "string") {
+        return;
+      }
 
-        container.replaceChildren();
+      const screenshot = document.createElement("div");
 
-        if (
-            !game.screenshots ||
-            typeof game.screenshots !== "object"
-        ) {
+      screenshot.className = "screenshot";
 
-            return;
+      if (index === 0 && trailer) {
+        const trailerLink = document.createElement("a");
 
-        }
+        trailerLink.className = "trailer-button";
 
-        const images =
-            Array.isArray(
-                game.screenshots.images
-            )
-                ? game.screenshots.images
-                : [];
+        trailerLink.href = trailer;
 
-        const trailer =
-            game.screenshots.trailer || "";
+        trailerLink.target = "_blank";
 
-        if (
-            !images.length &&
-            !trailer
-        ) {
+        trailerLink.rel = "noopener noreferrer";
 
-            return;
+        trailerLink.setAttribute("aria-label", "تشغيل التريلر");
 
-        }
-
-        images.forEach(
-            (
-                imageUrl,
-                index
-            ) => {
-
-                if (
-                    !imageUrl ||
-                    typeof imageUrl !== "string"
-                ) {
-
-                    return;
-
-                }
-
-                const screenshot =
-                    document.createElement(
-                        "div"
-                    );
-
-                screenshot.className =
-                    "screenshot";
-
-                if (
-                    index === 0 &&
-                    trailer
-                ) {
-
-                    const trailerLink =
-                        document.createElement(
-                            "a"
-                        );
-
-                    trailerLink.className =
-                        "trailer-button";
-
-                    trailerLink.href =
-                        trailer;
-
-                    trailerLink.target =
-                        "_blank";
-
-                    trailerLink.rel =
-                        "noopener noreferrer";
-
-                    trailerLink.setAttribute(
-                        "aria-label",
-                        "تشغيل التريلر"
-                    );
-
-                    trailerLink.innerHTML = `
+        trailerLink.innerHTML = `
 
                         <span
                             class="btn-play-trailer"
@@ -1174,84 +655,51 @@
 
                     `;
 
-                    screenshot.appendChild(
-                        trailerLink
-                    );
+        screenshot.appendChild(trailerLink);
+      }
 
-                }
+      const link = document.createElement("a");
 
-                const link =
-                    document.createElement(
-                        "a"
-                    );
+      link.className = "screenshot-image";
 
-                link.className =
-                    "screenshot-image";
+      link.href = imageUrl;
 
-                link.href =
-                    imageUrl;
+      link.target = "_blank";
 
-                link.target =
-                    "_blank";
+      link.rel = "noopener noreferrer";
 
-                link.rel =
-                    "noopener noreferrer";
+      const image = document.createElement("img");
 
-                const image =
-                    document.createElement(
-                        "img"
-                    );
+      image.src = imageUrl;
 
-                image.src =
-                    imageUrl;
+      image.alt = game.title || "";
 
-                image.alt =
-                    game.title || "";
+      image.loading = "lazy";
 
-                image.loading =
-                    "lazy";
+      image.decoding = "async";
 
-                image.decoding =
-                    "async";
+      link.appendChild(image);
 
-                link.appendChild(
-                    image
-                );
+      screenshot.appendChild(link);
 
-                screenshot.appendChild(
-                    link
-                );
+      container.appendChild(screenshot);
+    });
+  }
 
-                container.appendChild(
-                    screenshot
-                );
+  /*
+   * =====================================================
+   * ERROR
+   * =====================================================
+   */
 
-            }
-        );
+  function showError() {
+    const container = document.querySelector(".game-container");
 
+    if (!container) {
+      return;
     }
 
-
-    /*
-     * =====================================================
-     * ERROR
-     * =====================================================
-     */
-
-    function showError() {
-
-        const container =
-            document.querySelector(
-                ".game-container"
-            );
-
-        if (!container) {
-
-            return;
-
-        }
-
-        container.innerHTML = `
+    container.innerHTML = `
 
             <div class="api-error">
 
@@ -1260,9 +708,7 @@
             </div>
 
         `;
+  }
 
-    }
-
-    loadGame();
-
+  loadGame();
 })();

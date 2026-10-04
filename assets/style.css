@@ -85,6 +85,33 @@ a {
     color: #6cc04a;
 }
 
+progress {
+    direction: ltr;
+    width: 35%;
+    height: 6px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 99999px;
+    overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99999px;
+}
+
+progress::-webkit-progress-value {
+    background: #6cc04a;
+    border-radius: 99999px;
+}
+
+progress::-moz-progress-bar {
+    background: #1e9c87;
+    border-radius: 99999px;
+}
+
 /* =========================================================
    ACCOUNT / DISCORD ICON
 ========================================================= */
