@@ -808,6 +808,96 @@ a {
     color: #fff;
 }
 
+/* =========================================================
+   GAME PAGE BACKGROUND
+   ========================================================= */
+
+body.game-page {
+    position: relative;
+    background: #111;
+}
+
+.game-background {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    background: #111;
+}
+
+.game-background-image {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    bottom: -60px;
+    left: -60px;
+    width: calc(100% + 120px);
+    height: calc(100% + 120px);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(32px);
+    transform: scale(1.08);
+    opacity: 0;
+
+    transition:
+        opacity 0.7s ease,
+        background-image 0s;
+}
+
+.game-background-image.visible {
+    opacity: 1;
+}
+
+.game-background-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgb(17, 17, 17) 0%,
+            rgba(17, 17, 17, 0.9) 40%,
+            rgba(17, 17, 17, 1) 100%,
+            rgba(17, 17, 17, 1) 100%
+        );
+}
+
+body.game-page .header {
+    position: relative;
+    z-index: 2;
+
+    background: rgba(23, 23, 23, 0.82);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+body.game-page .game-container {
+    position: relative;
+    z-index: 1;
+}
+
+body.game-page .footer {
+    position: relative;
+    z-index: 1;
+
+    background: transparent;
+}
+
+body.game-page .poster {
+    position: relative;
+    z-index: 2;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
+}
 
 /* =========================================================
    FOOTER
@@ -842,10 +932,44 @@ a {
     font-size: 10px;
 }
 
-
 /* =========================================================
    RESPONSIVE — TABLET
 ========================================================= */
+
+@media (max-width: 650px) {
+
+    .game-background {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .game-background-image {
+        top: -40px;
+        right: -40px;
+        bottom: -40px;
+        left: -40px;
+
+        width: calc(100% + 80px);
+        height: calc(100% + 80px);
+
+        filter: blur(24px);
+
+        transform: scale(1.08);
+    }
+
+
+    .game-background-overlay {
+        background:
+            linear-gradient(
+                to top,
+                rgb(17, 17, 17) 0%,
+                rgba(17, 17, 17, 0.9) 40%,
+                rgba(17, 17, 17, 1) 100%,
+                rgba(17, 17, 17, 1) 100%
+            );
+    }
+
+}
 
 
 @media (max-width: 650px) {

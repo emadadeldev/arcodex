@@ -10,7 +10,6 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-
     <!-- =====================================================
         SEO
     ===================================================== -->
@@ -42,7 +41,6 @@
         content="Arabic"
     >
 
-
     <!-- =====================================================
         CANONICAL
     ===================================================== -->
@@ -51,7 +49,6 @@
         rel="canonical"
         href="https://emadadeldev.github.io/arcodex/game.html"
     >
-
 
     <!-- =====================================================
         OPEN GRAPH
@@ -97,7 +94,6 @@
         content="ARCODEX"
     >
 
-
     <!-- =====================================================
         TWITTER / X
     ===================================================== -->
@@ -127,7 +123,6 @@
         content="ARCODEX"
     >
 
-
     <!-- =====================================================
         FONTS
     ===================================================== -->
@@ -148,7 +143,6 @@
         rel="stylesheet"
     >
 
-
     <!-- =====================================================
         DATABASE
     ===================================================== -->
@@ -159,7 +153,6 @@
         as="fetch"
     >
 
-
     <!-- =====================================================
         CSS
     ===================================================== -->
@@ -168,7 +161,6 @@
         rel="stylesheet"
         href="assets/style.css"
     >
-
 
     <!-- =====================================================
         STRUCTURED DATA
@@ -192,7 +184,22 @@
 </head>
 
 
-<body>
+<body class="game-page">
+
+    <!-- =====================================================
+        BLURRED GAME BACKGROUND
+    ===================================================== -->
+
+    <div
+        class="game-background"
+        aria-hidden="true"
+    >
+
+        <div class="game-background-image"></div>
+
+        <div class="game-background-overlay"></div>
+
+    </div>
 
 
     <!-- =====================================================
@@ -209,7 +216,6 @@
             >
                 AR<span>CODEX</span>
             </a>
-
 
             <div class="account">
 
@@ -232,13 +238,11 @@
     </header>
 
 
-
     <!-- =====================================================
         GAME
     ===================================================== -->
 
     <main class="game-container">
-
 
         <!-- ================= TITLE ================= -->
 
@@ -248,22 +252,18 @@
                 تحميل...
             </h1>
 
-
             <div class="developer">
                 تحميل...
             </div>
-
 
             <div class="genres"></div>
 
         </section>
 
 
-
         <!-- ================= MAIN GAME INFO ================= -->
 
         <section class="game-main">
-
 
             <!-- ================= POSTER ================= -->
 
@@ -281,30 +281,17 @@
             </div>
 
 
-
             <!-- ================= DETAILS ================= -->
 
             <div class="game-details">
-
-
-                <!-- ================= DESCRIPTION ================= -->
 
                 <div class="description">
                     تحميل...
                 </div>
 
-
-
-                <!-- ================= SOCIAL LINKS ================= -->
-
                 <div class="social-links"></div>
 
-
-
-                <!-- ================= ACTIONS ================= -->
-
                 <div class="download-actions">
-
 
                     <!-- DOWNLOAD -->
 
@@ -315,8 +302,6 @@
                         تنزيل
                     </button>
 
-
-
                     <!-- SHARE -->
 
                     <button
@@ -325,8 +310,6 @@
                     >
                         مشاركة
                     </button>
-
-
 
                     <!-- LIKE -->
 
@@ -350,14 +333,11 @@
 
                     </button>
 
-
                 </div>
-
 
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -373,9 +353,7 @@
 
         </section>
 
-
     </main>
-
 
 
     <!-- =====================================================
@@ -391,7 +369,6 @@
     </footer>
 
 
-
     <!-- =====================================================
         JAVASCRIPT
     ===================================================== -->
@@ -399,7 +376,6 @@
     <script>
 
     (() => {
-
 
         /*
          * =====================================================
@@ -410,14 +386,11 @@
         const LIKE_API =
             "https://arcodex.emadadeldev.workers.dev/likes";
 
-
         const SITE_URL =
             "https://emadadeldev.github.io/arcodex";
 
-
         const DEFAULT_IMAGE =
             `${SITE_URL}/assets/logo.png`;
-
 
 
         /*
@@ -431,10 +404,8 @@
                 window.location.search
             );
 
-
         const slug =
             params.get("game");
-
 
 
         /*
@@ -448,7 +419,6 @@
             return;
 
         }
-
 
 
         /*
@@ -469,7 +439,6 @@
                         }
                     );
 
-
                 if (!response.ok) {
 
                     throw new Error(
@@ -478,10 +447,8 @@
 
                 }
 
-
                 const games =
                     await response.json();
-
 
                 if (!Array.isArray(games)) {
 
@@ -491,18 +458,11 @@
 
                 }
 
-
-
-                /*
-                 * Find requested game
-                 */
-
                 const game =
                     games.find(
                         item =>
                             item.slug === slug
                     );
-
 
                 if (!game) {
 
@@ -512,11 +472,9 @@
 
                 }
 
-
                 renderGame(game);
 
             }
-
 
             catch (error) {
 
@@ -532,28 +490,28 @@
         }
 
 
-
         /*
          * =====================================================
          * RENDER GAME
-         * ===================================================== */
+         * =====================================================
+         */
 
         function renderGame(game) {
-
 
             /*
              * =================================================
              * SEO
-             * ================================================= */
+             * =================================================
+             */
 
             updateSEO(game);
-
 
 
             /*
              * =================================================
              * TITLE
-             * ================================================= */
+             * =================================================
+             */
 
             document
                 .querySelector(
@@ -563,11 +521,11 @@
                     game.title || "";
 
 
-
             /*
              * =================================================
              * DEVELOPER
-             * ================================================= */
+             * =================================================
+             */
 
             document
                 .querySelector(
@@ -577,20 +535,18 @@
                     game.developer || "";
 
 
-
             /*
              * =================================================
              * PLATFORMS
-             * ================================================= */
+             * =================================================
+             */
 
             const genres =
                 document.querySelector(
                     ".genres"
                 );
 
-
             genres.replaceChildren();
-
 
             if (
                 Array.isArray(
@@ -600,7 +556,6 @@
 
                 const fragment =
                     document.createDocumentFragment();
-
 
                 for (
                     const port
@@ -612,17 +567,14 @@
                             "span"
                         );
 
-
                     span.textContent =
                         port;
-
 
                     fragment.appendChild(
                         span
                     );
 
                 }
-
 
                 genres.appendChild(
                     fragment
@@ -631,75 +583,82 @@
             }
 
 
-
             /*
              * =================================================
              * COVER
-             * ================================================= */
+             * =================================================
+             */
 
             const poster =
                 document.querySelector(
                     ".poster img"
                 );
 
-
             poster.src =
                 game.cover || "";
-
 
             poster.alt =
                 game.title || "";
 
 
+            /*
+             * =================================================
+             * BLURRED BACKGROUND
+             * =================================================
+             */
+
+            setGameBackground(
+                game.cover
+            );
+
 
             /*
              * =================================================
              * DESCRIPTION
-             * ================================================= */
+             * =================================================
+             */
 
             const description =
                 document.querySelector(
                     ".description"
                 );
 
-
             description.textContent =
                 game.Description || "";
-
 
 
             /*
              * =================================================
              * SOCIAL LINKS
-             * ================================================= */
+             * =================================================
+             */
 
             renderSocialLinks(
                 game
             );
 
 
-
             /*
              * =================================================
              * SCREENSHOTS
-             * ================================================= */
+             * =================================================
+             */
 
             renderScreenshots(
                 game
             );
 
 
-
             /*
              * =================================================
              * DOWNLOAD
-             * ================================================= */
+             * =================================================
+             */
 
             const downloadButton =
                 document.querySelector(
                     ".download-button"
                 );
-
 
             if (
                 game.downloadble === true &&
@@ -708,7 +667,6 @@
 
                 downloadButton.style.display =
                     "inline-flex";
-
 
                 downloadButton.onclick =
                     () => {
@@ -728,22 +686,22 @@
             }
 
 
-
             /*
              * =================================================
              * SHARE
-             * ================================================= */
+             * =================================================
+             */
 
             setupShareButton(
                 game
             );
 
 
-
             /*
              * =================================================
              * LIKE
-             * ================================================= */
+             * =================================================
+             */
 
             setupLikeButton(
                 game
@@ -752,55 +710,95 @@
         }
 
 
+        /*
+         * =====================================================
+         * GAME BACKGROUND
+         * =====================================================
+         */
+
+        function setGameBackground(
+            imageUrl
+        ) {
+
+            const background =
+                document.querySelector(
+                    ".game-background-image"
+                );
+
+            if (
+                !background ||
+                !imageUrl
+            ) {
+
+                return;
+
+            }
+
+            /*
+             * Preload image first.
+             * This prevents the background from
+             * appearing half-loaded.
+             */
+
+            const image =
+                new Image();
+
+            image.onload =
+                () => {
+
+                    background.style.backgroundImage =
+                        `url("${imageUrl}")`;
+
+                    requestAnimationFrame(
+                        () => {
+
+                            background.classList.add(
+                                "visible"
+                            );
+
+                        }
+                    );
+
+                };
+
+            image.onerror =
+                () => {
+
+                    background.classList.remove(
+                        "visible"
+                    );
+
+                };
+
+            image.src =
+                imageUrl;
+
+        }
+
 
         /*
          * =====================================================
          * SEO
-         * ===================================================== */
+         * =====================================================
+         */
 
         function updateSEO(
             game
         ) {
 
-
-            /*
-             * Game title
-             */
-
             const gameTitle =
                 game.title ||
                 "ARCODEX";
 
-
-
-            /*
-             * Developer
-
-            */
-
             const developer =
                 game.developer ||
                 "";
-
-
-
-            /*
-             * Description
-
-            */
 
             const gameDescription =
                 cleanDescription(
                     game.Description ||
                     `تعريب لعبة ${gameTitle} باللغة العربية على ARCODEX.`
                 );
-
-
-
-            /*
-             * Keywords
-
-            */
 
             const keywords = [
                 gameTitle,
@@ -816,26 +814,11 @@
                 .filter(Boolean)
                 .join(", ");
 
-
-
-            /*
-             * Current game URL
-
-            */
-
             const gameUrl =
                 `${SITE_URL}/game.html?game=${encodeURIComponent(game.slug)}`;
 
-
-
-            /*
-             * Game image
-
-            */
-
             let gameImage =
                 DEFAULT_IMAGE;
-
 
             if (game.cover) {
 
@@ -860,126 +843,71 @@
 
             }
 
-
-
-            /*
-             * Page title
-
-            */
-
             document.title =
                 `${gameTitle} - ARCODEX`;
-
-
-
-            /*
-             * Description
-
-            */
 
             setMeta(
                 'meta[name="description"]',
                 gameDescription
             );
 
-
-
-            /*
-             * Keywords
-
-            */
-
             setMeta(
                 'meta[name="keywords"]',
                 keywords
             );
-
-
-
-            /*
-             * Canonical
-
-            */
 
             setLink(
                 'link[rel="canonical"]',
                 gameUrl
             );
 
-
-
-            /*
-             * =================================================
-             * OPEN GRAPH
-             * ================================================= */
-
             setMeta(
                 'meta[property="og:title"]',
                 `${gameTitle} - ARCODEX`
             );
-
 
             setMeta(
                 'meta[property="og:description"]',
                 gameDescription
             );
 
-
             setMeta(
                 'meta[property="og:url"]',
                 gameUrl
             );
-
 
             setMeta(
                 'meta[property="og:image"]',
                 gameImage
             );
 
-
             setMeta(
                 'meta[property="og:image:alt"]',
                 gameTitle
             );
-
-
-
-            /*
-             * =================================================
-             * TWITTER
-             * ================================================= */
 
             setMeta(
                 'meta[name="twitter:title"]',
                 `${gameTitle} - ARCODEX`
             );
 
-
             setMeta(
                 'meta[name="twitter:description"]',
                 gameDescription
             );
-
 
             setMeta(
                 'meta[name="twitter:image"]',
                 gameImage
             );
 
-
             setMeta(
                 'meta[name="twitter:image:alt"]',
                 gameTitle
             );
 
-
-
-            /*
-             * =================================================
-             * STRUCTURED DATA
-             * ================================================= */
-
             updateStructuredData({
+
                 title:
                     gameTitle,
 
@@ -999,16 +927,17 @@
                     Array.isArray(game.port)
                         ? game.port
                         : []
+
             });
 
         }
 
 
-
         /*
          * =====================================================
          * SET META
-         * ===================================================== */
+         * =====================================================
+         */
 
         function setMeta(
             selector,
@@ -1020,13 +949,11 @@
                     selector
                 );
 
-
             if (!element) {
 
                 return;
 
             }
-
 
             element.setAttribute(
                 "content",
@@ -1036,11 +963,11 @@
         }
 
 
-
         /*
          * =====================================================
          * SET LINK
-         * ===================================================== */
+         * =====================================================
+         */
 
         function setLink(
             selector,
@@ -1052,13 +979,11 @@
                     selector
                 );
 
-
             if (!element) {
 
                 return;
 
             }
-
 
             element.setAttribute(
                 "href",
@@ -1068,11 +993,11 @@
         }
 
 
-
         /*
          * =====================================================
          * CLEAN DESCRIPTION
-         * ===================================================== */
+         * =====================================================
+         */
 
         function cleanDescription(
             text
@@ -1086,11 +1011,11 @@
         }
 
 
-
         /*
          * =====================================================
          * STRUCTURED DATA
-         * ===================================================== */
+         * =====================================================
+         */
 
         function updateStructuredData(
             data
@@ -1101,13 +1026,11 @@
                     "#game-schema"
                 );
 
-
             if (!schema) {
 
                 return;
 
             }
-
 
             const json = {
 
@@ -1134,12 +1057,6 @@
 
             };
 
-
-
-            /*
-             * Developer
-             */
-
             if (data.developer) {
 
                 json.author = {
@@ -1154,12 +1071,6 @@
 
             }
 
-
-
-            /*
-             * Platforms
-             */
-
             if (
                 Array.isArray(
                     data.platform
@@ -1172,7 +1083,6 @@
 
             }
 
-
             schema.textContent =
                 JSON.stringify(
                     json
@@ -1181,11 +1091,11 @@
         }
 
 
-
         /*
          * =====================================================
          * SHARE
-         * ===================================================== */
+         * =====================================================
+         */
 
         function setupShareButton(
             game
@@ -1195,7 +1105,6 @@
                 document.querySelector(
                     ".magnet-button"
                 );
-
 
             shareButton.onclick =
                 async () => {
@@ -1228,10 +1137,8 @@
                                     window.location.href
                                 );
 
-
                             shareButton.textContent =
                                 "تم نسخ الرابط";
-
 
                             setTimeout(
                                 () => {
@@ -1247,7 +1154,6 @@
 
                     }
 
-
                     catch (error) {
 
                         console.error(
@@ -1262,11 +1168,11 @@
         }
 
 
-
         /*
          * =====================================================
          * LIKE
-         * ===================================================== */
+         * =====================================================
+         */
 
         function setupLikeButton(
             game
@@ -1277,42 +1183,23 @@
                     ".like-button"
                 );
 
-
             const likeCount =
                 likeButton.querySelector(
                     ".like-count"
                 );
-
 
             const likeText =
                 likeButton.querySelector(
                     ".like-text"
                 );
 
-
-
-            /*
-             * Load current likes
-             */
-
             loadLikes(
                 game,
                 likeCount
             );
 
-
-
-            /*
-             * Click
-             */
-
             likeButton.onclick =
                 async () => {
-
-
-                    /*
-                     * Prevent double click
-                     */
 
                     if (
                         likeButton.disabled
@@ -1322,10 +1209,8 @@
 
                     }
 
-
                     likeButton.disabled =
                         true;
-
 
                     try {
 
@@ -1354,7 +1239,6 @@
                                 }
                             );
 
-
                         if (!response.ok) {
 
                             throw new Error(
@@ -1363,37 +1247,20 @@
 
                         }
 
-
                         const data =
                             await response.json();
 
-
-
-                        /*
-                         * Update count
-                         */
-
                         likeCount.textContent =
                             data.likes ?? 0;
-
-
-
-                        /*
-                         * Change button
-
-                        */
 
                         likeButton.classList.add(
                             "liked"
                         );
 
-
                         likeText.textContent =
                             "أعجبني";
 
-
                     }
-
 
                     catch (error) {
 
@@ -1403,7 +1270,6 @@
                         );
 
                     }
-
 
                     finally {
 
@@ -1417,11 +1283,11 @@
         }
 
 
-
         /*
          * =====================================================
          * LOAD LIKES
-         * ===================================================== */
+         * =====================================================
+         */
 
         async function loadLikes(
             game,
@@ -1442,7 +1308,6 @@
                         }
                     );
 
-
                 if (!response.ok) {
 
                     throw new Error(
@@ -1451,16 +1316,13 @@
 
                 }
 
-
                 const data =
                     await response.json();
-
 
                 likeCount.textContent =
                     data.likes ?? 0;
 
             }
-
 
             catch (error) {
 
@@ -1468,7 +1330,6 @@
                     "LOAD LIKES:",
                     error
                 );
-
 
                 likeCount.textContent =
                     "0";
@@ -1478,11 +1339,11 @@
         }
 
 
-
         /*
          * =====================================================
          * SOCIAL LINKS
-         * ===================================================== */
+         * =====================================================
+         */
 
         function renderSocialLinks(
             game
@@ -1493,9 +1354,7 @@
                     ".social-links"
                 );
 
-
             container.replaceChildren();
-
 
             if (
                 !game.links ||
@@ -1506,14 +1365,7 @@
 
             }
 
-
-
-            /*
-             * Icons
-             */
-
             const icons = {
-
 
                 github: `
 
@@ -1529,7 +1381,6 @@
                     </svg>
 
                 `,
-
 
                 x: `
 
@@ -1548,12 +1399,6 @@
 
             };
 
-
-
-            /*
-             * Create links
-             */
-
             for (
                 const [
                     name,
@@ -1564,11 +1409,6 @@
                 )
             ) {
 
-
-                /*
-                 * Ignore empty links
-                 */
-
                 if (
                     !url ||
                     !icons[name]
@@ -1578,39 +1418,30 @@
 
                 }
 
-
-
                 const link =
                     document.createElement(
                         "a"
                     );
 
-
                 link.href =
                     url;
-
 
                 link.target =
                     "_blank";
 
-
                 link.rel =
                     "noopener noreferrer";
 
-
                 link.title =
                     name.toUpperCase();
-
 
                 link.setAttribute(
                     "aria-label",
                     name
                 );
 
-
                 link.innerHTML =
                     icons[name];
-
 
                 container.appendChild(
                     link
@@ -1621,11 +1452,11 @@
         }
 
 
-
         /*
          * =====================================================
          * SCREENSHOTS
-         * ===================================================== */
+         * =====================================================
+         */
 
         function renderScreenshots(
             game
@@ -1636,14 +1467,7 @@
                     "#screenshots"
                 );
 
-
             container.replaceChildren();
-
-
-
-            /*
-             * No screenshots
-             */
 
             if (
                 !game.screenshots ||
@@ -1654,12 +1478,6 @@
 
             }
 
-
-
-            /*
-             * Images
-             */
-
             const images =
                 Array.isArray(
                     game.screenshots.images
@@ -1667,21 +1485,8 @@
                     ? game.screenshots.images
                     : [];
 
-
-
-            /*
-             * Trailer
-             */
-
             const trailer =
                 game.screenshots.trailer || "";
-
-
-
-            /*
-             * Nothing to show
-
-            */
 
             if (
                 !images.length &&
@@ -1691,12 +1496,6 @@
                 return;
 
             }
-
-
-
-            /*
-             * Create screenshots
-             */
 
             images.forEach(
                 (
@@ -1713,21 +1512,13 @@
 
                     }
 
-
                     const screenshot =
                         document.createElement(
                             "div"
                         );
 
-
                     screenshot.className =
                         "screenshot";
-
-
-
-                    /*
-                     * Trailer
-                     */
 
                     if (
                         index === 0 &&
@@ -1739,28 +1530,22 @@
                                 "a"
                             );
 
-
                         trailerLink.className =
                             "trailer-button";
-
 
                         trailerLink.href =
                             trailer;
 
-
                         trailerLink.target =
                             "_blank";
 
-
                         trailerLink.rel =
                             "noopener noreferrer";
-
 
                         trailerLink.setAttribute(
                             "aria-label",
                             "تشغيل التريلر"
                         );
-
 
                         trailerLink.innerHTML = `
 
@@ -1770,72 +1555,53 @@
 
                         `;
 
-
                         screenshot.appendChild(
                             trailerLink
                         );
 
                     }
 
-
-
-                    /*
-                     * Screenshot image
-                     */
-
                     const link =
                         document.createElement(
                             "a"
                         );
 
-
                     link.className =
                         "screenshot-image";
-
 
                     link.href =
                         imageUrl;
 
-
                     link.target =
                         "_blank";
 
-
                     link.rel =
                         "noopener noreferrer";
-
 
                     const image =
                         document.createElement(
                             "img"
                         );
 
-
                     image.src =
                         imageUrl;
-
 
                     image.alt =
                         game.title || "";
 
-
                     image.loading =
                         "lazy";
 
-
                     image.decoding =
                         "async";
-
 
                     link.appendChild(
                         image
                     );
 
-
                     screenshot.appendChild(
                         link
                     );
-
 
                     container.appendChild(
                         screenshot
@@ -1847,11 +1613,11 @@
         }
 
 
-
         /*
          * =====================================================
          * ERROR
-         * ===================================================== */
+         * =====================================================
+         */
 
         function showError() {
 
@@ -1860,13 +1626,11 @@
                     ".game-container"
                 );
 
-
             if (!container) {
 
                 return;
 
             }
-
 
             container.innerHTML = `
 
@@ -1881,19 +1645,121 @@
         }
 
 
-
         /*
          * =====================================================
          * START
-         * ===================================================== */
+         * =====================================================
+         */
+
+
+            function setGameBackground(imageUrl) {
+                const background = document.querySelector(".game-background-image");
+
+                if (!background || !imageUrl) return;
+
+                const image = new Image();
+
+                image.crossOrigin = "anonymous";
+
+                image.onload = () => {
+
+                    background.style.backgroundImage = `url("${imageUrl}")`;
+
+                    extractCoverColor(image);
+
+                    requestAnimationFrame(() => {
+                        background.classList.add("visible");
+                    });
+                };
+
+                image.onerror = () => {
+                    background.classList.remove("visible");
+                };
+
+                    image.src = imageUrl;
+            }
+
+            function extractCoverColor(image) {
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d", {
+            willReadFrequently: true
+        });
+
+        const size = 40;
+
+        canvas.width = size;
+        canvas.height = size;
+
+        ctx.drawImage(image, 0, 0, size, size);
+
+        const data = ctx.getImageData(
+            0,
+            0,
+            size,
+            size
+        ).data;
+
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        let count = 0;
+
+        for (let i = 0; i < data.length; i += 4) {
+
+            const red = data[i];
+            const green = data[i + 1];
+            const blue = data[i + 2];
+            const alpha = data[i + 3];
+
+            if (alpha < 150) continue;
+
+            /*
+            * تجاهل الألوان القريبة جدًا من الأسود
+            * عشان الـ gradient مايبقاش أسود بالكامل.
+            */
+            if (
+                red < 20 &&
+                green < 20 &&
+                blue < 20
+            ) {
+                continue;
+            }
+
+            r += red;
+            g += green;
+            b += blue;
+
+            count++;
+        }
+
+        if (!count) return;
+
+        r = Math.round(r / count);
+        g = Math.round(g / count);
+        b = Math.round(b / count);
+
+        /*
+        * نخفف اللون شوية عشان يكون مناسب
+        * كـ background وليس لون صارخ.
+        */
+        r = Math.round(r * 0.65);
+        g = Math.round(g * 0.65);
+        b = Math.round(b * 0.65);
+
+        document.documentElement.style.setProperty(
+            "--cover-color",
+            `rgb(${r}, ${g}, ${b})`
+        );
+    }
 
         loadGame();
 
-
     })();
 
-    </script>
 
+
+    </script>
 
 </body>
 
