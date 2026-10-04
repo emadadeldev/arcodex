@@ -3,8 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ARCODEX - Emad Adel</title>
+
+    <meta name="description" content="منصة مشاريع تعريب الألعاب من تطوير Emad Adel. اكتشف تعريبات الألعاب العربية، المشاريع المتاحة، الإصدارات والمنصات المدعومة.">
+    <meta name="keywords" content="ARCODEX, تعريب الألعاب, تعريبات الألعاب, ترجمة الألعاب, ألعاب عربية, Arabic Localization, Game Localization, Emad Adel">
+    <meta name="author" content="Emad Adel">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="language" content="Arabic">
+    <meta name="content-language" content="ar">
+
+    <meta name="theme-color" content="#111111">
+    <meta name="application-name" content="ARCODEX">
+    <meta name="apple-mobile-web-app-title" content="ARCODEX">
+
+    <link rel="canonical" href="https://emadadeldev.github.io/arcodex">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ARCODEX">
+    <meta property="og:title" content="ARCODEX - تعريبات الألعاب">
+    <meta property="og:description" content="اكتشف مشاريع وتعريبات الألعاب العربية من Emad Adel.">
+    <meta property="og:url" content="https://emadadeldev.github.io/arcodex">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:image" content="https://thumb.wikimedia.org/wikipedia/en/thumb/4/44/Red_Dead_Redemption_II.jpg/250px-Red_Dead_Redemption_II.jpg">
+    <meta property="og:image:alt" content="ARCODEX - تعريبات الألعاب">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ARCODEX - تعريبات الألعاب">
+    <meta name="twitter:description" content="اكتشف مشاريع وتعريبات الألعاب العربية من Emad Adel.">
+    <meta name="twitter:image" content="https://thumb.wikimedia.org/wikipedia/en/thumb/4/44/Red_Dead_Redemption_II.jpg/250px-Red_Dead_Redemption_II.jpg">
+    <meta name="twitter:image:alt" content="ARCODEX - تعريبات الألعاب">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Database -->
     <link rel="preload" href="api/database.json" as="fetch" crossorigin>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="assets/style.css">
 </head>
 
@@ -14,13 +59,18 @@
 
     <header class="header">
         <div class="header-inner">
-            <a href="#" class="logo">
+            <a href="https://emadadeldev.github.io/arcodex" class="logo">
                 AR<span>CODEX</span>
             </a>
-            <nav class="nav">
-                <a href="#">التعريبات</a>
-                <a href="#">طلب تعريب</a>
-            </nav>
+            <div class="account">
+                <a href="https://emadadeldev.github.io/arcodex">
+                    التعريبات
+                </a>
+                <span>|</span>
+                <a href="donate.html">
+                   الدعم المدي
+                </a>
+            </div>
         </div>
     </header>
 
@@ -31,31 +81,26 @@
         <section class="search-section">
 
             <h1>
-                ARCODEX
                 <span>نصوص عربية</span>
+                ARCODEX
             </h1>
 
             <p class="subtitle">
-               تعريبات
+              تعريبات المطور العربي <strong>عماد عادل</strong>
             </p>
 
         </section>
 
-    <!-- ================= POPULAR ================= -->
+    <!-- ================= Game Section ================= -->
 
         <section class="game-section">
 
             <div class="section-title">
-
                 <h2>
                     التعريبات
                 </h2>
-
             </div>
-
-
             <div class="games-grid" id="gamesGrid"></div>
-
         </section>
 
     </main>
@@ -105,8 +150,10 @@
                         ? game.port.join(" / ")
                         : "";
 
-                    const card = document.createElement("article");
+                    const card = document.createElement("a");
+
                     card.className = "game-card";
+                    card.href = `game.html?game=${encodeURIComponent(game.slug)}`;
 
                     card.innerHTML = `
                         <div class="poster">
@@ -117,15 +164,15 @@
                                 decoding="async"
                             >
 
-                            <span class="port">${escapeHTML(ports)}</span>
+                            <span class="port">
+                                ${escapeHTML(ports)}
+                            </span>
                         </div>
 
                         <div class="game-info">
-                            <h3>${escapeHTML(game.title)}</h3>
-
-                            <p class="game-description">
-                                ${escapeHTML(game.Description)}
-                            </p>
+                            <h3>
+                                ${escapeHTML(game.title)}
+                            </h3>
                         </div>
                     `;
 

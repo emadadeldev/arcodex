@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCODEX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="api/database.json" as="fetch">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+        HEADER
+    ===================================================== -->
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://emadadeldev.github.io/arcodex" class="logo">
+                AR<span>CODEX</span>
+            </a>
+            <div class="account">
+                <a href="https://emadadeldev.github.io/arcodex">
+                    التعريبات
+                </a>
+                <span>|</span>
+                <a href="donate.html">
+                   الدعم المدي
+                </a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- =====================================================
+        GAME
+    ===================================================== -->
+
+    <main class="game-container">
+
+
+        <!-- ================= TITLE ================= -->
+
+        <section class="game-heading">
+
+            <h1>
+                تحميل...
+            </h1>
+
+
+            <div class="developer">
+                تحميل...
+            </div>
+
+
+            <div class="genres"></div>
+
+        </section>
+
+
+
+        <!-- ================= MAIN GAME INFO ================= -->
+
+        <section class="game-main">
+
+
+            <!-- ================= POSTER ================= -->
+
+            <div class="poster-column">
+
+                <div class="poster">
+
+                    <img
+                        src=""
+                        alt=""
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= DETAILS ================= -->
+
+            <div class="game-details">
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="description">
+                    تحميل...
+                </div>
+
+
+
+                <!-- SOCIAL LINKS -->
+
+                <div class="social-links"></div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="download-actions">
+
+                    <button class="download-button">
+                        تنزيل
+                    </button>
+
+
+                    <button class="magnet-button">
+                        مشاركة
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+            SCREENSHOTS
+        ================================================= -->
+
+        <section class="screenshots-section">
+
+            <div
+                id="screenshots"
+                class="screenshots"
+            ></div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+        FOOTER
+    ===================================================== -->
+
+    <footer class="footer">
+
+        <div class="copyright">
+            © 2026 ARCODEX. All rights reserved.
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+        API
+    ===================================================== -->
+
+    <script>
+
+    (() => {
+
+
+        /*
+         * URL
+         */
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const slug =
+            params.get("game");
+
+
+
+        /*
+         * No game specified
+         */
+
+        if (!slug) {
+
+            showError();
+
+            return;
+
+        }
+
+
+
+        /*
+         * Load database
+         */
+
+        async function loadGame() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "api/database.json",
+                        {
+                            cache: "force-cache"
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+
+                }
+
+
+                const games =
+                    await response.json();
+
+
+                if (!Array.isArray(games)) {
+
+                    throw new Error(
+                        "Invalid database"
+                    );
+
+                }
+
+
+
+                /*
+                 * Find requested game
+                 */
+
+                const game =
+                    games.find(
+                        item =>
+                            item.slug === slug
+                    );
+
+
+                if (!game) {
+
+                    showError();
+
+                    return;
+
+                }
+
+
+                renderGame(game);
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "GAME API:",
+                    error
+                );
+
+                showError();
+
+            }
+
+        }
+
+
+
+        /*
+         * Render game
+         */
+
+        function renderGame(game) {
+
+
+            /*
+             * Page title
+             */
+
+            document.title =
+                `ARCODEX - ${game.title}`;
+
+
+
+            /*
+             * Title
+             */
+
+            document
+                .querySelector(
+                    ".game-heading h1"
+                )
+                .textContent =
+                    game.title || "";
+
+
+
+            /*
+             * Developer
+             */
+
+            document
+                .querySelector(
+                    ".developer"
+                )
+                .textContent =
+                    game.developer || "";
+
+
+
+            /*
+             * Platforms
+             */
+
+            const genres =
+                document.querySelector(
+                    ".genres"
+                );
+
+
+            genres.replaceChildren();
+
+
+            if (Array.isArray(game.port)) {
+
+                const fragment =
+                    document.createDocumentFragment();
+
+
+                for (const port of game.port) {
+
+                    const span =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    span.textContent =
+                        port;
+
+
+                    fragment.appendChild(
+                        span
+                    );
+
+                }
+
+
+                genres.appendChild(
+                    fragment
+                );
+
+            }
+
+
+
+            /*
+             * Cover
+             */
+
+            const poster =
+                document.querySelector(
+                    ".poster img"
+                );
+
+
+            poster.src =
+                game.cover || "";
+
+
+            poster.alt =
+                game.title || "";
+
+
+
+            /*
+             * Description
+             */
+
+            const description =
+                document.querySelector(
+                    ".description"
+                );
+
+
+            description.textContent =
+                game.Description || "";
+
+
+
+            /*
+             * Social Links
+             */
+
+            renderSocialLinks(game);
+
+
+
+            /*
+             * Screenshots
+             */
+
+            renderScreenshots(game);
+
+
+
+            /*
+             * Download
+             */
+
+            const downloadButton =
+                document.querySelector(
+                    ".download-button"
+                );
+
+
+            if (
+                game.downloadble === true &&
+                game.downloadlink
+            ) {
+
+                downloadButton.style.display =
+                    "inline-block";
+
+
+                downloadButton.onclick =
+                    () => {
+
+                        window.location.href =
+                            game.downloadlink;
+
+                    };
+
+            }
+
+            else {
+
+                downloadButton.style.display =
+                    "none";
+
+            }
+
+
+
+            /*
+             * Share
+             */
+
+            const shareButton =
+                document.querySelector(
+                    ".magnet-button"
+                );
+
+
+            shareButton.onclick =
+                async () => {
+
+                    try {
+
+                        if (
+                            navigator.share
+                        ) {
+
+                            await navigator.share({
+
+                                title:
+                                    game.title,
+
+                                text:
+                                    game.Description || "",
+
+                                url:
+                                    window.location.href
+
+                            });
+
+                        }
+
+                        else {
+
+                            await navigator.clipboard
+                                .writeText(
+                                    window.location.href
+                                );
+
+
+                            shareButton.textContent =
+                                "تم نسخ الرابط";
+
+
+                            setTimeout(() => {
+
+                                shareButton.textContent =
+                                    "مشاركة";
+
+                            }, 2000);
+
+                        }
+
+                    }
+
+                    catch (error) {
+
+                        console.error(
+                            "Share:",
+                            error
+                        );
+
+                    }
+
+                };
+
+        }
+
+
+
+        /*
+         * Social Links
+         */
+
+        function renderSocialLinks(game) {
+
+            const container =
+                document.querySelector(
+                    ".social-links"
+                );
+
+
+            container.replaceChildren();
+
+
+            if (
+                !game.links ||
+                typeof game.links !== "object"
+            ) {
+
+                return;
+
+            }
+
+
+
+            /*
+             * Icons
+             */
+
+            const icons = {
+
+
+                github: `
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.17c-3.2.69-3.88-1.54-3.88-1.54-.53-1.36-1.28-1.72-1.28-1.72-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.24 3.32.95.1-.74.4-1.24.73-1.52-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.77.11 3.06.73.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.78 1.04.78 2.1v3.11c0 .31.21.67.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"
+                        />
+
+                    </svg>
+
+                `,
+
+
+                x: `
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26L22.827 21.75h-6.617l-5.18-6.773-5.93 6.773H1.79l7.73-8.835L1.173 2.25H7.96l4.682 6.188 5.602-6.188Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"
+                        />
+
+                    </svg>
+
+                `
+
+            };
+
+
+
+            /*
+             * Create links
+             */
+
+            for (
+                const [name, url]
+                of Object.entries(game.links)
+            ) {
+
+
+                /*
+                 * Ignore empty links
+                 */
+
+                if (
+                    !url ||
+                    !icons[name]
+                ) {
+
+                    continue;
+
+                }
+
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    url;
+
+
+                link.target =
+                    "_blank";
+
+
+                link.rel =
+                    "noopener noreferrer";
+
+
+                link.title =
+                    name.toUpperCase();
+
+
+                link.setAttribute(
+                    "aria-label",
+                    name
+                );
+
+
+                link.innerHTML =
+                    icons[name];
+
+
+                container.appendChild(
+                    link
+                );
+
+            }
+
+        }
+
+
+
+        /*
+         * Screenshots
+         */
+
+        function renderScreenshots(game) {
+
+            const container =
+                document.querySelector(
+                    "#screenshots"
+                );
+
+
+            container.replaceChildren();
+
+
+            /*
+            * No screenshots
+            */
+
+            if (
+                !game.screenshots ||
+                typeof game.screenshots !== "object"
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+            * Images
+            *
+            * كل عنصر عبارة عن رابط صورة فقط
+            */
+
+            const images =
+                Array.isArray(
+                    game.screenshots.images
+                )
+                    ? game.screenshots.images
+                    : [];
+
+
+            /*
+            * Trailer
+            */
+
+            const trailer =
+                game.screenshots.trailer || "";
+
+
+            /*
+            * Nothing to show
+            */
+
+            if (
+                !images.length &&
+                !trailer
+            ) {
+
+                return;
+
+            }
+
+
+
+            /*
+            * Create screenshots
+            */
+
+            images.forEach(
+                (imageUrl, index) => {
+
+                    if (
+                        !imageUrl ||
+                        typeof imageUrl !== "string"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const screenshot =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    screenshot.className =
+                        "screenshot";
+
+
+
+                    /*
+                    * Trailer
+                    *
+                    * يظهر فوق أول صورة فقط
+                    */
+
+                    if (
+                        index === 0 &&
+                        trailer
+                    ) {
+
+                        const trailerLink =
+                            document.createElement(
+                                "a"
+                            );
+
+
+                        trailerLink.className =
+                            "trailer-button";
+
+
+                        trailerLink.href =
+                            trailer;
+
+
+                        trailerLink.target =
+                            "_blank";
+
+
+                        trailerLink.rel =
+                            "noopener noreferrer";
+
+
+                        trailerLink.setAttribute(
+                            "aria-label",
+                            "تشغيل التريلر"
+                        );
+
+
+                        trailerLink.innerHTML = `
+
+                            <span
+                                class="btn-play-trailer"
+                            ></span>
+
+                        `;
+
+
+                        screenshot.appendChild(
+                            trailerLink
+                        );
+
+                    }
+
+
+
+                    /*
+                    * Screenshot image
+                    */
+
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    link.className =
+                        "screenshot-image";
+
+
+                    link.href =
+                        imageUrl;
+
+
+                    link.target =
+                        "_blank";
+
+
+                    link.rel =
+                        "noopener noreferrer";
+
+
+                    link.innerHTML = `
+
+                        <img
+                            src="${imageUrl}"
+                            alt="${game.title || ""}"
+                            loading="lazy"
+                            decoding="async"
+                        >
+
+                    `;
+
+
+                    screenshot.appendChild(
+                        link
+                    );
+
+
+                    container.appendChild(
+                        screenshot
+                    );
+
+                }
+            );
+
+        }
+
+        /*
+         * Error
+         */
+
+        function showError() {
+
+            document
+                .querySelector(
+                    ".game-container"
+                )
+                .innerHTML = `
+
+                    <div class="api-error">
+
+                        اللعبة غير موجودة.
+
+                    </div>
+
+                `;
+
+        }
+
+
+
+        /*
+         * Start
+         */
+
+        loadGame();
+
+
+    })();
+
+    </script>
+
+
+</body>
+
+</html>
