@@ -409,6 +409,63 @@ a {
     color: #fff;
 }
 
+.like-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 115px;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background: #202020;
+    color: #bbb;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.like-button:hover {
+    background: #242424;
+    border-color: #6cc04a;
+    color: #fff;
+}
+
+.like-button.liked {
+    background: #202020;
+    border-color: #6cc04a;
+    color: #6cc04a;
+}
+
+.like-icon {
+    font-size: 16px;
+    line-height: 1;
+    transition: transform .2s ease;
+}
+
+.like-button:hover .like-icon {
+    transform: scale(1.15);
+}
+
+.like-button.liked .like-icon {
+    color: #6cc04a;
+}
+
+.like-count {
+    color: #777;
+    font-size: 12px;
+}
+
+.like-button.liked .like-count {
+    color: #6cc04a;
+}
+
 /* =========================================================
    SOCIAL LINKS / ICONS
 ========================================================= */
@@ -789,6 +846,19 @@ a {
 /* =========================================================
    RESPONSIVE — TABLET
 ========================================================= */
+
+
+@media (max-width: 650px) {
+    .download-actions {
+        flex-direction: column;
+    }
+
+    .like-button,
+    .download-button,
+    .magnet-button {
+        width: 100%;
+    }
+}
 
 @media (max-width: 900px) {
 
