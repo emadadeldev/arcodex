@@ -171,19 +171,23 @@
     renderScreenshots(game);
 
     /*
-     * DOWNLOAD
-     */
+    * DOWNLOAD
+    */
 
     const downloadButton = document.querySelector(".download-button");
 
     if (game.downloadble === true && game.downloadlink) {
-      downloadButton.style.display = "inline-flex";
+    downloadButton.style.display = "inline-flex";
 
-      downloadButton.onclick = () => {
-        window.location.href = game.downloadlink;
-      };
+    downloadButton.onclick = () => {
+        window.open(
+        game.downloadlink,
+        "_blank",
+        "noopener,noreferrer"
+        );
+    };
     } else {
-      downloadButton.style.display = "none";
+    downloadButton.style.display = "none";
     }
 
     /*
