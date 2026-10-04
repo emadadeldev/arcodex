@@ -1,175 +1,34 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <!-- =====================================================
-        SEO
-    ===================================================== -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARCODEX</title>
-
-    <meta
-        name="description"
-        content="ARCODEX - Emad Adel تعريبات الألعاب ومشاريع التعريب العربية."
-    >
-
-    <meta
-        name="keywords"
-        content="ARCODEX,Emad Adel, تعريبات, تعريب ألعاب, ترجمة ألعاب, ألعاب عربية"
-    >
-
-    <meta
-        name="author"
-        content="Emad Adel"
-    >
-
-    <meta
-        name="robots"
-        content="index, follow"
-    >
-
-    <meta
-        name="language"
-        content="Arabic"
-    >
-
-    <!-- =====================================================
-        CANONICAL
-    ===================================================== -->
-
-    <link
-        rel="canonical"
-        href="https://emadadeldev.github.io/arcodex/game.html"
-    >
-
-    <!-- =====================================================
-        OPEN GRAPH
-    ===================================================== -->
-
-    <meta
-        property="og:type"
-        content="website"
-    >
-
-    <meta
-        property="og:site_name"
-        content="ARCODEX"
-    >
-
-    <meta
-        property="og:locale"
-        content="ar_AR"
-    >
-
-    <meta
-        property="og:title"
-        content="ARCODEX"
-    >
-
-    <meta
-        property="og:description"
-        content="تعريبات الألعاب ومشاريع التعريب العربية."
-    >
-
-    <meta
-        property="og:url"
-        content="https://emadadeldev.github.io/arcodex/game.html"
-    >
-
-    <meta
-        property="og:image"
-        content="https://emadadeldev.github.io/arcodex/assets/logo.png"
-    >
-
-    <meta
-        property="og:image:alt"
-        content="ARCODEX"
-    >
-
-    <!-- =====================================================
-        TWITTER / X
-    ===================================================== -->
-
-    <meta
-        name="twitter:card"
-        content="summary_large_image"
-    >
-
-    <meta
-        name="twitter:title"
-        content="ARCODEX"
-    >
-
-    <meta
-        name="twitter:description"
-        content="تعريبات الألعاب ومشاريع التعريب العربية."
-    >
-
-    <meta
-        name="twitter:image"
-        content="https://emadadeldev.github.io/arcodex/assets/logo.png"
-    >
-
-    <meta
-        name="twitter:image:alt"
-        content="ARCODEX"
-    >
-
-    <!-- =====================================================
-        FONTS
-    ===================================================== -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- =====================================================
-        DATABASE
-    ===================================================== -->
-
-    <link
-        rel="preload"
-        href="api/database.json"
-        as="fetch"
-    >
-
-    <!-- =====================================================
-        CSS
-    ===================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="assets/style.css"
-    >
-
-    <!-- =====================================================
-        STRUCTURED DATA
-    ===================================================== -->
-
-    <script
-        id="game-schema"
-        type="application/ld+json"
-    >
+    <meta name="description" content="ARCODEX - Emad Adel تعريبات الألعاب ومشاريع التعريب العربية.">
+    <meta name="keywords" content="ARCODEX,Emad Adel, تعريبات, تعريب ألعاب, ترجمة ألعاب, ألعاب عربية">
+    <meta name="author" content="Emad Adel">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Arabic">
+    <link rel="canonical" href="https://emadadeldev.github.io/arcodex/game.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ARCODEX">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:title" content="ARCODEX">
+    <meta property="og:description" content="تعريبات الألعاب ومشاريع التعريب العربية.">
+    <meta property="og:url" content="https://emadadeldev.github.io/arcodex/game.html">
+    <meta property="og:image" content="https://emadadeldev.github.io/arcodex/assets/logo.png">
+    <meta property="og:image:alt" content="ARCODEX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ARCODEX">
+    <meta name="twitter:description" content="تعريبات الألعاب ومشاريع التعريب العربية.">
+    <meta name="twitter:image" content="https://emadadeldev.github.io/arcodex/assets/logo.png">
+    <meta name="twitter:image:alt" content="ARCODEX">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="api/database.json" as="fetch">
+    <link rel="stylesheet" href="assets/style.css">
+    <script id="game-schema" type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "VideoGame",
@@ -180,32 +39,13 @@
         "inLanguage": "ar"
     }
     </script>
-
 </head>
-
-
 <body class="game-page">
-
-    <!-- =====================================================
-        BLURRED GAME BACKGROUND
-    ===================================================== -->
-
-    <div
-        class="game-background"
-        aria-hidden="true"
-    >
-
+    <div class="game-background" aria-hidden="true">
         <div class="game-background-image"></div>
-
         <div class="game-background-overlay"></div>
-
     </div>
-
-
-    <!-- =====================================================
-        HEADER
-    ===================================================== -->
-
+    <!-- HEADER  -->
     <header class="header">
         <div class="header-inner">
             <a href="https://emadadeldev.github.io/arcodex" class="logo">
@@ -217,151 +57,76 @@
                 </a>
                 <span>|</span>
                 <a href="https://discord.gg/j4ctCTgd6S" target="_blank" rel="noopener noreferrer">
-                  الديسكورد
+                    الديسكورد
                 </a>
                 <a href="donate.html">
-                   الدعم المدي
+                    الدعم المدي
                 </a>
             </div>
         </div>
     </header>
-
-
-    <!-- =====================================================
-        GAME
-    ===================================================== -->
-
+    <!--  GAME -->
     <main class="game-container">
-
-        <!-- ================= TITLE ================= -->
-
+        <!--  TITLE  -->
         <section class="game-heading">
-
             <h1>
                 تحميل...
             </h1>
-
             <div class="developer">
                 تحميل...
             </div>
-
             <div class="genres"></div>
-
         </section>
-
-
-        <!-- ================= MAIN GAME INFO ================= -->
-
+        <!--  MAIN GAME INFO  -->
         <section class="game-main">
-
-            <!-- ================= POSTER ================= -->
-
+            <!--  POSTER  -->
             <div class="poster-column">
-
                 <div class="poster">
-
-                    <img
-                        src=""
-                        alt=""
-                    >
-
+                    <img src="" alt="">
                 </div>
-
             </div>
-
-
-            <!-- ================= DETAILS ================= -->
-
+            <!--  DETAILS  -->
             <div class="game-details">
-
                 <div class="description">
                     تحميل...
                 </div>
-
                 <div class="social-links"></div>
-
                 <div class="download-actions">
-
                     <!-- DOWNLOAD -->
-
-                    <button
-                        class="download-button"
-                        type="button"
-                    >
+                    <button class="download-button" type="button">
                         تنزيل
                     </button>
-
                     <!-- SHARE -->
-
-                    <button
-                        class="magnet-button"
-                        type="button"
-                    >
+                    <button class="magnet-button" type="button">
                         مشاركة
                     </button>
-
                     <!-- LIKE -->
-
-                    <button
-                        class="like-button"
-                        type="button"
-                        aria-label="إعجاب"
-                    >
-
+                    <button class="like-button" type="button" aria-label="إعجاب">
                         <span class="like-icon">
                             ❤️
                         </span>
-
                         <span class="like-text">
                             إعجاب
                         </span>
-
                         <span class="like-count">
                             0
                         </span>
-
                     </button>
-
                 </div>
-
             </div>
-
         </section>
-
-
-        <!-- =================================================
-            SCREENSHOTS
-        ================================================= -->
-
+        <!-- SCREENSHOTS  -->
         <section class="screenshots-section">
-
-            <div
-                id="screenshots"
-                class="screenshots"
-            ></div>
-
+            <div id="screenshots" class="screenshots"></div>
         </section>
-
     </main>
-
-
-    <!-- =====================================================
-        FOOTER
-    ===================================================== -->
-
+    <!-- FOOTER -->
     <footer class="footer">
-
         <div class="copyright">
-         تم تطوير الموقع وتصميمه بواسطة <a href="ehttps://github.com/emadadeldev" target="_blank" rel="noopener noreferrer">© ARCODEX </a>Emad Adel. All rights reserved 2026
+            تم تطوير الموقع وتصميمه بواسطة <a href="ehttps://github.com/emadadeldev" target="_blank"
+                rel="noopener noreferrer">© ARCODEX </a>Emad Adel. All rights reserved 2026
         </div>
-
     </footer>
-
-
-    <!-- =====================================================
-        JAVASCRIPT
-    ===================================================== -->
     <script src="assets/script.js"></script>
 </body>
-
 </html>
