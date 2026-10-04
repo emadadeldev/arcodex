@@ -1,13 +1,44 @@
 [
     {
-        "title": "Red Dead Redemption 2",
-        "Description": "West",
+        "slug": "red-dead-redemption-2",
+        "title": "Red Dead Redemption 2 تعريب",
+        "Description": "بحلول عام 1899، شارف عصر الخارجين عن القانون وحاملي السلاح على الانتهاء وصارت أمريكا أرضاً يسودها القانون... حتى الغرب الأمريكي بات أغلبه خاضعاً للسلطة، لا تزال بعض العصابات تسرح وتمرح، لكنها مطاردة ومدمّرة.",
         "cover": "https://assets.vg247.com/current//2018/05/red_dead_redemption_2_cover_art_1.jpg",
+        "developer": "Redemption Team & Emad Adel",
         "port": [
             "PC",
             "PS4",
-            "PS5"
+            "PS5",
+            "Steam Deck"
         ],
+        "screenshots": {
+            "trailer": "https://youtu.be/8GXfEFZMHTI",
+            "images": [
+                "https://emadadeldev.github.io/rtea/assets/preview/pausemenu.webp",
+                "https://emadadeldev.github.io/rtea/assets/preview/menu.webp",
+                "https://emadadeldev.github.io/rtea/assets/preview/help.webp"
+            ]
+        },
+        "links": {
+            "github": "https://github.com/emadadeldev",
+            "x": "https://x.com/redemption_rm"
+        },
+        "downloadlink": "https://emadadeldev.github.io/rtea/",
+        "downloadble": true
+    },
+    {
+        "slug": "mass-effect",
+        "title": "Mass Effect تعريب",
+        "Description": "ملحمة الفضاء Mass Effect قادمة بالعربي قريبا...",
+        "cover": "https://thumb.wikimedia.org/wikipedia/en/thumb/e/e8/MassEffect.jpg/250px-MassEffect.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+        "developer": "Emad Adel",
+        "port": [
+            "PC"
+        ],
+        "links": {
+            "github": "https://github.com/emadadeldev",
+            "x": "https://x.com/emadadeldev"
+        },
         "downloadlink": "",
         "downloadble": false
     }
