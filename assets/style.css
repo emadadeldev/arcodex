@@ -402,19 +402,15 @@ progress::-moz-progress-bar {
 .magnet-button {
   border: 1px solid #333;
   border-radius: 3px;
-
   background: #202020;
-
   color: #bbb;
-
   padding: 10px 24px;
-
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
-
   cursor: pointer;
-
+  align-items: center;
+  justify-content: center;
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
