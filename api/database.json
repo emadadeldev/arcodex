@@ -41,5 +41,21 @@
         },
         "downloadlink": "",
         "downloadble": false
+    },
+        {
+        "slug": "tomba-2",
+        "title": "Tomba 2 تعريب",
+        "Description": "لعبة Tomba 2 قادمة بالعربي قريبا...",
+        "cover": "https://thumb.wikimedia.org/wikipedia/en/thumb/f/ff/Tomba%21_2_-_The_Evil_Swine_Return_Coverart.png/250px-Tomba%21_2_-_The_Evil_Swine_Return_Coverart.png",
+        "developer": "Emad Adel",
+        "port": [
+            "PS2 Emulator"
+        ],
+        "links": {
+            "github": "https://github.com/emadadeldev",
+            "x": "https://x.com/emadadeldev"
+        },
+        "downloadlink": "",
+        "downloadble": false
     }
 ]
