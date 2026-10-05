@@ -156,7 +156,9 @@
      */
 
     const progressBar = document.querySelector(".progbar");
+    const progresswrapper = document.querySelector(".progress-wrapper");
 
+   
     if (progressBar) {
       const progress = Number(game.complate);
 
@@ -165,9 +167,9 @@
         !Number.isFinite(progress) ||
         progress >= 100
       ) {
-        progressBar.style.display = "none";
+        progresswrapper.style.display = "none";
       } else {
-        progressBar.style.display = "";
+        progresswrapper.style.display = "";
 
         progressBar.value = Math.min(100, Math.max(0, progress));
       }
