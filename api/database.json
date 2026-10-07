@@ -166,6 +166,13 @@
                 "role": "مصمم الخط"
             }
         ],
+        "screenshots": {
+        "images": [
+            "assets/img/tomba2/start.webp",
+            "assets/img/tomba2/monolog.webp",
+            "assets/img/tomba2/pausemenu.webp"
+            ]
+        },
         "links": {
             "github": "https://github.com/emadadeldev",
             "x": "https://x.com/emadadeldev"
