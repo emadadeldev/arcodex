@@ -131,9 +131,9 @@
         ],
         "screenshots": {
             "images": [
-                "https://cdn.discordapp.com/attachments/1491076566363410575/1554321495029710868/Screenshot_298.png?ex=6ac30db2&is=6ac1bc32&hm=045fd2c459d4fceac872c1f32d86e358b77b60b2289fa38c18addecc38c2f81e&",
-                "https://cdn.discordapp.com/attachments/1491076566363410575/1554321444115058748/Screenshot_296.png?ex=6ac30da6&is=6ac1bc26&hm=5e5bbff2a8955cd60b40ad2cbca21f5707a8816209b49ac3483e901714a9676d&",
-                "https://cdn.discordapp.com/attachments/1491076566363410575/1554321388104585287/Screenshot_293.png?ex=6ac30d98&is=6ac1bc18&hm=9762d0a4288cba0a17d4cce784b6ab3b531f838e2dcaab97896bc8c2f2ac961e&"
+                "assets/img/me1/map.webp",
+                "assets/img/me1/pausemenu.webp",
+                "assets/img/me1/loading.webp"
             ]
         },
         "links": {
