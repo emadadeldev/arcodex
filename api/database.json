@@ -9,6 +9,18 @@
         "port": [
             "PC"
         ],
+        "contributors": [
+            {
+                "name": "Arhorizons",
+                "type": "discord",
+                "role": "الترجمة والتدقيق"
+            },
+            {
+                "name": "emadadeldev",
+                "type": "github",
+                "role": "مترجم"
+            }
+        ],
         "links": {
             "github": "https://github.com/emadadeldev",
             "discord": "https://discord.gg/j4ctCTgd6S",
@@ -29,6 +41,18 @@
             "PS4",
             "PS5",
             "Steam Deck"
+        ],
+        "contributors": [
+            {
+                "name": "Redemption Team",
+                "type": "discord",
+                "role": "الترجمة والتدقيق"
+            },
+            {
+                "name": "emadadeldev",
+                "type": "github",
+                "role": "برمجة وتعديل المحرك"
+            }
         ],
         "screenshots": {
             "trailer": "https://youtu.be/8GXfEFZMHTI",
@@ -56,6 +80,18 @@
         "port": [
             "PC"
         ],
+        "contributors": [
+            {
+                "name": "Majid KSA",
+                "type": "x",
+                "role": "الترجمة والتدقيق"
+            },
+            {
+                "name": "emadadeldev",
+                "type": "github",
+                "role": "إصلاح التعريب"
+            }
+        ],
         "screenshots": {
             "images": [
                 "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/5OOyNaGivEw4hN4MO46d0z/9c8ae22363031f4f802e5fad0f8a019b/56c4947f88a7e300458b4690-1.jpg",
@@ -78,9 +114,20 @@
         "cover": "https://thumb.wikimedia.org/wikipedia/en/thumb/e/e8/MassEffect.jpg/250px-MassEffect.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
         "developer": "Emad Adel",
         "complate": "30",
-
         "port": [
             "PC"
+        ],
+        "contributors": [
+            {
+                "name": "emadadeldev",
+                "type": "github",
+                "role": "مطور ومدير المشروع"
+            },
+            {
+                "name": "kasper4989",
+                "type": "discord",
+                "role": "الترجمة والتدقيق"
+            }
         ],
         "screenshots": {
             "images": [
@@ -104,9 +151,20 @@
         "cover": "https://thumb.wikimedia.org/wikipedia/en/thumb/f/ff/Tomba%21_2_-_The_Evil_Swine_Return_Coverart.png/250px-Tomba%21_2_-_The_Evil_Swine_Return_Coverart.png",
         "developer": "Emad Adel",
         "complate": "50",
-
         "port": [
             "PS1 Emulator"
+        ],
+        "contributors": [
+            {
+                "name": "emadadeldev",
+                "type": "github",
+                "role": "مطور ومدير المشروع"
+            },
+            {
+                "name": "skzezo",
+                "type": "discord",
+                "role": "مصمم الخط"
+            }
         ],
         "links": {
             "github": "https://github.com/emadadeldev",
