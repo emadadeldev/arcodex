@@ -13,12 +13,12 @@
             {
                 "name": "Arhorizons",
                 "type": "discord",
-                "role": "الترجمة والتدقيق"
+                "role": "ترجمة وتدقيق"
             },
             {
                 "name": "emadadeldev",
                 "type": "github",
-                "role": "مترجم"
+                "role": "ترجمة"
             }
         ],
         "links": {
@@ -46,7 +46,7 @@
             {
                 "name": "Redemption Team",
                 "type": "discord",
-                "role": "الترجمة والتدقيق"
+                "role": "ترجمة وتدقيق"
             },
             {
                 "name": "emadadeldev",
@@ -84,7 +84,7 @@
             {
                 "name": "Majid KSA",
                 "type": "x",
-                "role": "الترجمة والتدقيق"
+                "role": "ترجمة وتدقيق"
             },
             {
                 "name": "emadadeldev",
@@ -121,12 +121,12 @@
             {
                 "name": "emadadeldev",
                 "type": "github",
-                "role": "مطور ومدير المشروع"
+                "role": "مترجم ومطور المشروع"
             },
             {
                 "name": "kasper4989",
                 "type": "discord",
-                "role": "الترجمة والتدقيق"
+                "role": "ترجمة وتدقيق"
             }
         ],
         "screenshots": {
