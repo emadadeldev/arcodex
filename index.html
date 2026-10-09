@@ -163,13 +163,20 @@
         "use strict";
 
         const gamesGrid = document.getElementById("gamesGrid");
-        const INDEX_URL = "games/index.md";
+
+        // مسار الموقع الأساسي على GitHub Pages
+        const BASE_URL = new URL("./", window.location.href);
+        const INDEX_URL = new URL("games/index.md", BASE_URL);
 
         async function fetchText(url) {
-          const response = await fetch(url, { cache: "no-cache" });
+          const response = await fetch(url, {
+            cache: "no-cache",
+          });
 
           if (!response.ok) {
-            throw new Error(`فشل تحميل ${url} (HTTP ${response.status})`);
+            throw new Error(
+              `فشل تحميل الملف (HTTP ${response.status}): ${url.href}`,
+            );
           }
 
           return response.text();
@@ -179,6 +186,7 @@
           const markdown = await fetchText(INDEX_URL);
 
           return markdown
+            .replace(/^\uFEFF/, "")
             .split(/\r?\n/)
             .map((line) => line.trim())
             .filter((line) => /^-\s+.+\.md$/i.test(line))
@@ -194,20 +202,28 @@
         function parseGameMarkdown(markdown) {
           const match = markdown
             .replace(/^\uFEFF/, "")
-            .match(/^---\s*\r?\n([\s\S]*?)\r?\n---(?:\s*\r?\n|$)/);
+            .match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
 
           if (!match) {
-            throw new Error("بيانات YAML غير موجودة داخل ملف اللعبة");
+            throw new Error(
+              "لم يتم العثور على YAML في بداية ملف Markdown. يجب أن يبدأ الملف بـ ---",
+            );
           }
 
           if (!window.jsyaml) {
-            throw new Error("مكتبة js-yaml لم يتم تحميلها");
+            throw new Error("مكتبة js-yaml لم يتم تحميلها.");
           }
 
-          const data = window.jsyaml.load(match[1]);
+          let data;
+
+          try {
+            data = window.jsyaml.load(match[1]);
+          } catch (error) {
+            throw new Error(`خطأ في تنسيق YAML: ${error.message}`);
+          }
 
           if (!data || typeof data !== "object" || Array.isArray(data)) {
-            throw new Error("بيانات اللعبة غير صحيحة");
+            throw new Error("بيانات اللعبة غير صحيحة.");
           }
 
           return data;
@@ -223,17 +239,22 @@
         }
 
         async function fetchGame(filename) {
-          const markdown = await fetchText(
+          const fileURL = new URL(
             "games/" + encodeURIComponent(filename),
+            BASE_URL,
           );
 
+          const markdown = await fetchText(fileURL);
           const data = parseGameMarkdown(markdown);
           const slug = filename.replace(/\.md$/i, "");
+
+          const coverPath =
+            data.cover || data.image || data.poster || "assets/logo.png";
 
           return {
             slug: data.slug || slug,
             title: data.title || slug,
-            cover: data.cover || data.image || data.poster || "assets/logo.png",
+            cover: new URL(coverPath, BASE_URL).href,
             platforms: getPlatforms(data),
           };
         }
@@ -241,7 +262,10 @@
         function createGameCard(game) {
           const card = document.createElement("a");
           card.className = "game-card";
-          card.href = "game.html?=" + encodeURIComponent(game.slug);
+
+          const gameURL = new URL("game.html", BASE_URL);
+          gameURL.search = "?=" + encodeURIComponent(game.slug);
+          card.href = gameURL.href;
 
           const poster = document.createElement("div");
           poster.className = "poster";
@@ -255,7 +279,7 @@
           image.addEventListener("error", () => {
             if (!image.dataset.fallback) {
               image.dataset.fallback = "true";
-              image.src = "assets/logo.png";
+              image.src = new URL("assets/logo.png", BASE_URL).href;
             }
           });
 
@@ -278,17 +302,25 @@
         }
 
         async function loadGames() {
+          if (!gamesGrid) {
+            console.error('[ARCODEX] العنصر "#gamesGrid" غير موجود في HTML.');
+            return;
+          }
+
           gamesGrid.textContent = "جاري تحميل التعريبات...";
 
           try {
             const files = await discoverGames();
 
             if (files.length === 0) {
-              gamesGrid.textContent = "لا توجد ألعاب في games/index.md";
+              gamesGrid.textContent =
+                "لا توجد ملفات ألعاب في games/index.md. تأكد من كتابة كل اسم ملف في سطر يبدأ بـ -";
               return;
             }
 
-            const results = await Promise.allSettled(files.map(fetchGame));
+            const results = await Promise.allSettled(
+              files.map((filename) => fetchGame(filename)),
+            );
 
             const fragment = document.createDocumentFragment();
             const errors = [];
@@ -297,9 +329,13 @@
               if (result.status === "fulfilled") {
                 fragment.appendChild(createGameCard(result.value));
               } else {
-                errors.push(files[index]);
+                const filename = files[index];
+                const reason = result.reason?.message || String(result.reason);
+
+                errors.push(`${filename}: ${reason}`);
+
                 console.error(
-                  `[ARCODEX] فشل تحميل ${files[index]}:`,
+                  `[ARCODEX] فشل تحميل ${filename}:`,
                   result.reason,
                 );
               }
@@ -310,13 +346,18 @@
             if (errors.length > 0) {
               const error = document.createElement("p");
               error.className = "api-error";
-              error.textContent = "تعذر تحميل: " + errors.join("، ");
+              error.style.whiteSpace = "pre-wrap";
+              error.textContent =
+                "تعذر تحميل بعض الألعاب:\n\n" + errors.join("\n\n");
+
               gamesGrid.appendChild(error);
             }
           } catch (error) {
             console.error("[ARCODEX]", error);
+
             gamesGrid.textContent =
-              "حدث خطأ أثناء تحميل قائمة الألعاب: " + error.message;
+              "حدث خطأ أثناء تحميل قائمة الألعاب:\n" +
+              (error.message || String(error));
           }
         }
 
