@@ -157,26 +157,29 @@ progress::-moz-progress-bar {
   gap: 5px;
 }
 
-.account .icon-link svg {
+.account .icon-link img {
   width: 24px;
   height: 24px;
   display: block;
   flex-shrink: 0;
-  fill: currentColor;
+
+  filter: brightness(0) saturate(100%) invert(47%);
+
   transition:
     transform 0.2s ease,
-    fill 0.2s ease;
+    filter 0.2s ease;
 }
 
-.account .icon-link:hover svg {
+.account .icon-link:hover img {
   transform: scale(1.08);
-  fill: currentColor;
+  filter: brightness(0) saturate(100%)
+    invert(72%) sepia(35%) saturate(900%)
+    hue-rotate(55deg) brightness(95%);
 }
 
 .account span {
   color: #444;
 }
-
 /* =========================================================
    GLOBAL CONTAINERS
 ========================================================= */
@@ -564,6 +567,35 @@ progress::-moz-progress-bar {
 }
 
 .social-links a[aria-label="x"] svg {
+  width: 18px;
+  height: 18px;
+}
+
+.social-links a img {
+  width: 19px;
+  height: 19px;
+  display: block;
+
+  filter: brightness(0) saturate(100%)
+    invert(70%);
+
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.social-links a:hover img {
+  filter: brightness(0) saturate(100%)
+    invert(72%) sepia(34%) saturate(1000%)
+    hue-rotate(55deg) brightness(95%);
+
+  transform: scale(1.05);
+}
+
+.social-links a[aria-label="github"] img {
+  width: 20px;
+  height: 20px;
+}
+
+.social-links a[aria-label="x"] img {
   width: 18px;
   height: 18px;
 }
