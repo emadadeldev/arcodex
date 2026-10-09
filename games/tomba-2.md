@@ -10,7 +10,7 @@ complate: "38"
 downloadble: false
 downloadlink: ""
 links:
-  x: "https://x.com/emadadeldev"
+  x: "https://x.com/skzezo_ar"
   github: "https://github.com/emadadeldev"
 contributors: 
   - name: "Emad Adel"
