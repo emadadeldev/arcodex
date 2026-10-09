@@ -1,6 +1,6 @@
 ---
-slug: assassins-creed-2
-title: Assassin's Creed II
+slug: assassins-creed-2 
+title: Assassin's Creed II تعريب
 developer: Majid KSA & Emad Adel
 cover: https://upload.wikimedia.org/wikipedia/ar/a/a9/Assassins_Creed_2_Box_ar.JPG?utm_source=ar.wikipedia.org&utm_campaign=parser&utm_content=thumbnail_unscaled
 port:
