@@ -4,26 +4,21 @@
   const LIKE_API = "https://arcodex.emadadeldev.workers.dev/likes";
   const $ = (id) => document.getElementById(id);
 
-  const loading = $("game-loading");
   const errorBox = $("game-error");
   const errorMessage = $("game-error-message");
   const content = $("game-content");
-
-  if (loading) loading.hidden = true;
 
   const defer = window.requestAnimationFrame
     ? window.requestAnimationFrame.bind(window)
     : (callback) => setTimeout(callback, 0);
 
   function showError(message) {
-    if (loading) loading.hidden = true;
     if (content) content.hidden = true;
     if (errorBox) errorBox.hidden = false;
     if (errorMessage) errorMessage.textContent = message;
   }
 
   function showContent() {
-    if (loading) loading.hidden = true;
     if (errorBox) errorBox.hidden = true;
     if (content) content.hidden = false;
   }
@@ -509,5 +504,7 @@
     }
   }
 
-  loadGame();
+  document.addEventListener("DOMContentLoaded", loadGame, {
+    once: true,
+  });
 })();

@@ -29,9 +29,14 @@
   <link rel="preconnect" href="https://arcodex.emadadeldev.workers.dev" />
   <link rel="dns-prefetch" href="//arcodex.emadadeldev.workers.dev" />
   <link rel="preload" as="image" href="assets/logo.png" />
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
 
   <script id="game-schema" type="application/ld+json">
       {
@@ -82,17 +87,13 @@
 
   <!-- GAME PAGE -->
   <main class="game-container">
-    <div id="game-loading" role="status" style="text-align: center; padding: 40px">
-      جاري تحميل بيانات اللعبة...
-    </div>
-
     <div id="game-error" role="alert" hidden style="text-align: center; padding: 40px">
       <h2>تعذر تحميل اللعبة</h2>
       <p id="game-error-message"></p>
       <a href="./">العودة إلى التعريبات</a>
     </div>
 
-    <div id="game-content" hidden>
+    <div id="game-content">
       <section class="game-heading">
         <h1 id="game-title"></h1>
         <div class="developer" id="game-developer"></div>
