@@ -60,7 +60,8 @@
 
     <link rel="stylesheet" href="assets/style.css" />
 
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+    
   </head>
 
   <body>
@@ -135,9 +136,8 @@
           <h2>التعريبات</h2>
         </div>
 
-        <div class="games-grid" id="gamesGrid">
-          <p>جاري تحميل التعريبات...</p>
-        </div>
+      <div class="games-grid" id="gamesGrid"></div>
+
       </section>
     </main>
 
@@ -155,9 +155,6 @@
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
-
     <script>
       (() => {
         "use strict";
@@ -170,7 +167,7 @@
 
         async function fetchText(url) {
           const response = await fetch(url, {
-            cache: "no-cache",
+            cache: "default",
           });
 
           if (!response.ok) {
@@ -307,61 +304,79 @@
             return;
           }
 
-          gamesGrid.textContent = "جاري تحميل التعريبات...";
-
           try {
             const files = await discoverGames();
 
             if (files.length === 0) {
               gamesGrid.textContent =
-                "لا توجد ملفات ألعاب في games/index.md. تأكد من كتابة كل اسم ملف في سطر يبدأ بـ -";
+                "لا توجد تعريبات متاحة حاليًا.";
               return;
             }
 
-            const results = await Promise.allSettled(
-              files.map((filename) => fetchGame(filename)),
-            );
-
-            const fragment = document.createDocumentFragment();
+            const cards = new Array(files.length);
             const errors = [];
 
-            results.forEach((result, index) => {
-              if (result.status === "fulfilled") {
-                fragment.appendChild(createGameCard(result.value));
-              } else {
-                const filename = files[index];
-                const reason = result.reason?.message || String(result.reason);
+            await Promise.all(
+              files.map(async (filename, index) => {
+                try {
+                  const game = await fetchGame(filename);
+                  const card = createGameCard(game);
 
-                errors.push(`${filename}: ${reason}`);
+                  cards[index] = card;
 
-                console.error(
-                  `[ARCODEX] فشل تحميل ${filename}:`,
-                  result.reason,
-                );
-              }
-            });
+                  const nextCard = cards.slice(index + 1).find(Boolean);
 
-            gamesGrid.replaceChildren(fragment);
+                  if (nextCard) {
+                    gamesGrid.insertBefore(card, nextCard);
+                  } else {
+                    gamesGrid.appendChild(card);
+                  }
+                } catch (error) {
+                  errors.push({
+                    index,
+                    filename,
+                    message: error?.message || String(error),
+                  });
+
+                  console.error(
+                    `[ARCODEX] فشل تحميل ${filename}:`,
+                    error,
+                  );
+                }
+              }),
+            );
 
             if (errors.length > 0) {
+              errors.sort((a, b) => a.index - b.index);
+
               const error = document.createElement("p");
               error.className = "api-error";
               error.style.whiteSpace = "pre-wrap";
               error.textContent =
-                "تعذر تحميل بعض الألعاب:\n\n" + errors.join("\n\n");
+                "تعذر تحميل بعض الألعاب:\n\n" +
+                errors
+                  .map((item) => `${item.filename}: ${item.message}`)
+                  .join("\n\n");
 
               gamesGrid.appendChild(error);
             }
+
           } catch (error) {
             console.error("[ARCODEX]", error);
 
-            gamesGrid.textContent =
-              "حدث خطأ أثناء تحميل قائمة الألعاب:\n" +
-              (error.message || String(error));
+            const errorMessage = document.createElement("p");
+            errorMessage.className = "api-error";
+            errorMessage.textContent =
+              "تعذر تحميل قائمة التعريبات. يرجى المحاولة لاحقًا.";
+
+            gamesGrid.replaceChildren(errorMessage);
           }
         }
 
-        loadGames();
+        document.addEventListener("DOMContentLoaded", loadGames, {
+          once: true,
+        });
+
       })();
     </script>
   </body>
