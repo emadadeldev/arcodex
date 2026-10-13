@@ -8,7 +8,7 @@ port:
   - PS4
 complate: "99"
 downloadble: true
-downloadlink: "https://drive.google.com/file/d/1dQLmx_Cl2_dnkOge--mr9ALtmn51MDcs/view?usp=sharing"
+downloadlink: "https://www.arhorizons.com/Projects/red-dead-redemption-1"
 links:
   x: "https://x.com/emadadeldev"
   discord: "https://discord.com/invite/E9PBeuGcDk"
