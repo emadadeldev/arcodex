@@ -256,6 +256,10 @@
         likes.dataset.slug = game.slug;
         likes.setAttribute("aria-label", "عدد الإعجابات");
 
+        // const label = document.createElement("span");
+        // label.className = "game-likes-label";
+        // label.textContent = "إعجاب";
+
         const heart = document.createElement("span");
         heart.className = "game-likes-icon";
         heart.setAttribute("aria-hidden", "true");
@@ -265,12 +269,7 @@
         count.className = "game-likes-count";
         count.textContent = "…";
 
-        const label = document.createElement("span");
-        label.className = "game-likes-label";
-        label.textContent = "إعجاب";
-
-        likes.append(heart, count, label);
-
+        likes.append(heart,count);
         info.append(heading, likes);
         card.append(poster, info);
 
@@ -324,7 +323,6 @@
             })
           );
 
-          // تحميل أعداد الإعجابات بعد إنشاء الكروت
           loadGameLikes();
 
           if (errors.length > 0) {
