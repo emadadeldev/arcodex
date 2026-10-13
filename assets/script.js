@@ -1,7 +1,6 @@
 (() => {
   "use strict";
 
-  const LIKE_API = "https://arcodex.emadadeldev.workers.dev/likes";
   const $ = (id) => document.getElementById(id);
 
   const errorBox = $("game-error");
@@ -154,48 +153,48 @@
     container.replaceChildren(fragment);
   }
 
-const ICONS = {
-  github: "github.svg",
-  x: "x-twitter.svg",
-  discord: "discord.svg",
-};
+  const ICONS = {
+    github: "github.svg",
+    x: "x-twitter.svg",
+    discord: "discord.svg",
+  };
 
-function renderSocialLinks(game) {
-  const container = document.querySelector(".social-links");
-  if (!container) return;
+  function renderSocialLinks(game) {
+    const container = document.querySelector(".social-links");
+    if (!container) return;
 
-  const fragment = document.createDocumentFragment();
-  const links = game.links;
+    const fragment = document.createDocumentFragment();
+    const links = game.links;
 
-  if (links && typeof links === "object") {
-    Object.entries(links).forEach(([name, value]) => {
-      const url = safeURL(value);
-      const iconFile = ICONS[name];
+    if (links && typeof links === "object") {
+      Object.entries(links).forEach(([name, value]) => {
+        const url = safeURL(value);
+        const iconFile = ICONS[name];
 
-      if (!url || !iconFile) return;
+        if (!url || !iconFile) return;
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.title = name.toUpperCase();
-      link.setAttribute("aria-label", name);
+        const link = document.createElement("a");
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.title = name.toUpperCase();
+        link.setAttribute("aria-label", name);
 
-      const icon = document.createElement("img");
-      icon.src = `assets/icons/${iconFile}`;
-      icon.alt = "";
-      icon.width = 24;
-      icon.height = 24;
-      icon.loading = "lazy";
-      icon.decoding = "async";
+        const icon = document.createElement("img");
+        icon.src = `assets/icons/${iconFile}`;
+        icon.alt = "";
+        icon.width = 24;
+        icon.height = 24;
+        icon.loading = "lazy";
+        icon.decoding = "async";
 
-      link.appendChild(icon);
-      fragment.appendChild(link);
-    });
+        link.appendChild(icon);
+        fragment.appendChild(link);
+      });
+    }
+
+    container.replaceChildren(fragment);
   }
-
-  container.replaceChildren(fragment);
-}
 
   function renderContributors(contributors) {
     const container = $("game-contributors");
@@ -254,7 +253,9 @@ function renderSocialLinks(game) {
     if (!container) return;
 
     const screenshots = game.screenshots || {};
-    const images = Array.isArray(screenshots.images) ? screenshots.images : [];
+    const images = Array.isArray(screenshots.images)
+      ? screenshots.images
+      : [];
     const trailer = safeURL(screenshots.trailer || "");
 
     const fragment = document.createDocumentFragment();
@@ -300,71 +301,13 @@ function renderSocialLinks(game) {
     container.replaceChildren(fragment);
   }
 
-  async function loadLikes(slug) {
-    const count = $("like-count");
-    if (!count) return;
-
-    try {
-      const response = await fetch(
-        `${LIKE_API}?slug=${encodeURIComponent(slug)}`,
-        { cache: "no-store" },
-      );
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      const data = await response.json();
-      count.textContent = data.likes ?? 0;
-    } catch (error) {
-      console.warn("LOAD LIKES:", error);
-      count.textContent = "0";
-    }
-  }
-
-  function setupLikeButton(slug) {
-    const button = $("like-button");
-    const count = $("like-count");
-
-    if (!button || !count) return;
-
-    button.onclick = async () => {
-      if (button.disabled) return;
-
-      button.disabled = true;
-
-      try {
-        const response = await fetch(LIKE_API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ slug }),
-        });
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const data = await response.json();
-
-        count.textContent = data.likes ?? 0;
-        button.classList.add("liked");
-        button.setAttribute("aria-pressed", "true");
-      } catch (error) {
-        console.error("LIKE API:", error);
-      } finally {
-        button.disabled = false;
-      }
-    };
-
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => loadLikes(slug), { timeout: 1200 });
-    } else {
-      setTimeout(() => loadLikes(slug), 150);
-    }
-  }
-
   function setupActions(data, slug) {
     const downloadButton = $("download-button");
     const downloadURL = safeURL(data.downloadlink || "");
 
     if (downloadButton) {
       downloadButton.hidden = !downloadURL;
+
       downloadButton.onclick = () => {
         if (downloadURL) {
           window.open(downloadURL, "_blank", "noopener,noreferrer");
@@ -398,8 +341,6 @@ function renderSocialLinks(game) {
         }
       };
     }
-
-    setupLikeButton(slug);
   }
 
   function setCover(data, title) {
@@ -418,7 +359,10 @@ function renderSocialLinks(game) {
 
     image.onerror = () => {
       image.onerror = null;
-      if (fallback && image.src !== fallback) image.src = fallback;
+
+      if (fallback && image.src !== fallback) {
+        image.src = fallback;
+      }
     };
 
     image.src = cover || fallback;
@@ -435,10 +379,13 @@ function renderSocialLinks(game) {
     }
 
     try {
-      const response = await fetch(`games/${encodeURIComponent(slug)}.md`, {
-        cache: "default",
-        credentials: "same-origin",
-      });
+      const response = await fetch(
+        `games/${encodeURIComponent(slug)}.md`,
+        {
+          cache: "default",
+          credentials: "same-origin",
+        },
+      );
 
       if (!response.ok) {
         throw new Error(
@@ -460,6 +407,7 @@ function renderSocialLinks(game) {
       setCover(data, title);
 
       const description = $("game-description");
+
       if (description) {
         description.innerHTML = renderMarkdown(body);
       }
@@ -491,7 +439,7 @@ function renderSocialLinks(game) {
           "@type": "VideoGame",
           name: title,
           description: body
-            .replace(/[#*_`>\[\]]/g, "")
+            .replace(/[#*_\`>\[\]]/g, "")
             .trim()
             .slice(0, 500),
           image: safeURL(

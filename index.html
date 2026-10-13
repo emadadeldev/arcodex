@@ -7,8 +7,7 @@
 
   <title>ARCODEX - Emad Adel</title>
 
-  <meta name="description"
-    content="منصة مشاريع تعريب الألعاب من تطوير Emad Adel. اكتشف تعريبات الألعاب العربية، المشاريع المتاحة، الإصدارات والمنصات المدعومة." />
+  <meta name="description" content="اكتشف مشاريع وتعريبات الألعاب من عماد عادل." />
   <meta name="keywords"
     content="ARCODEX, تعريب الألعاب, تعريبات الألعاب, ترجمة الألعاب, ألعاب عربية, Arabic Localization, Game Localization, Emad Adel" />
   <meta name="author" content="Emad Adel" />
@@ -25,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ARCODEX" />
   <meta property="og:title" content="ARCODEX - تعريبات الألعاب" />
-  <meta property="og:description" content="اكتشف مشاريع وتعريبات الألعاب العربية من Emad Adel." />
+  <meta property="og:description" content="اكتشف مشاريع وتعريبات الألعاب من عماد عادل." />
   <meta property="og:url" content="https://emadadeldev.github.io/arcodex" />
   <meta property="og:locale" content="ar_AR" />
   <meta property="og:image"
@@ -34,7 +33,7 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ARCODEX - تعريب الألعاب" />
-  <meta name="twitter:description" content="اكتشف مشاريع وتعريبات الألعاب العربية من Emad Adel." />
+  <meta name="twitter:description" content="اكتشف مشاريع وتعريبات الألعاب من عماد عادل." />
   <meta name="twitter:image:alt" content="ARCODEX - تعريبات الألعاب" />
 
   <link rel="icon" type="image/png" href="assets/favicon.png" />
@@ -47,14 +46,13 @@
   <link rel="stylesheet" href="assets/style.css" />
 
   <script defer src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
-
 </head>
 
 <body>
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
-      <a href="./" class="logo"> AR<span>CODEX</span> </a>
+      <a href="./" class="logo">AR<span>CODEX</span></a>
 
       <div class="account">
         <a href="./">التعريبات</a>
@@ -63,30 +61,19 @@
         <a href="donate.html">الدعم المادي</a>
         <span>|</span>
 
-          <a href="https://discord.gg/j4ctCTgd6S"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="icon-link"
-            aria-label="Discord">
-            <img src="assets/icons/discord.svg" alt="">
-          </a>
+        <a href="https://discord.gg/j4ctCTgd6S" target="_blank" rel="noopener noreferrer" class="icon-link"
+          aria-label="Discord">
+          <img src="assets/icons/discord.svg" alt="" />
+        </a>
 
-          <a href="https://x.com/emadadeldev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="icon-link"
-            aria-label="X">
-            <img src="assets/icons/x-twitter.svg" alt="">
-          </a>
+        <a href="https://x.com/emadadeldev" target="_blank" rel="noopener noreferrer" class="icon-link" aria-label="X">
+          <img src="assets/icons/x-twitter.svg" alt="" />
+        </a>
 
-          <a href="https://github.com/emadadeldev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="icon-link"
-            aria-label="GitHub">
-            <img src="assets/icons/github.svg" alt="">
-          </a>
-
+        <a href="https://github.com/emadadeldev" target="_blank" rel="noopener noreferrer" class="icon-link"
+          aria-label="GitHub">
+          <img src="assets/icons/github.svg" alt="" />
+        </a>
       </div>
     </div>
   </header>
@@ -115,7 +102,6 @@
       </div>
 
       <div class="games-grid" id="gamesGrid"></div>
-
     </section>
   </main>
 
@@ -144,7 +130,7 @@
 
         if (!response.ok) {
           throw new Error(
-            `فشل تحميل الملف (HTTP ${response.status}): ${url.href}`,
+            `فشل تحميل الملف (HTTP ${response.status}): ${url.href}`
           );
         }
 
@@ -164,7 +150,7 @@
             (filename) =>
               !filename.includes("/") &&
               !filename.includes("\\") &&
-              filename.toLowerCase() !== "index.md",
+              filename.toLowerCase() !== "index.md"
           );
       }
 
@@ -175,7 +161,7 @@
 
         if (!match) {
           throw new Error(
-            "لم يتم العثور على YAML في بداية ملف Markdown. يجب أن يبدأ الملف بـ ---",
+            "لم يتم العثور على YAML في بداية ملف Markdown. يجب أن يبدأ الملف بـ ---"
           );
         }
 
@@ -210,7 +196,7 @@
       async function fetchGame(filename) {
         const fileURL = new URL(
           "games/" + encodeURIComponent(filename),
-          BASE_URL,
+          BASE_URL
         );
 
         const markdown = await fetchText(fileURL);
@@ -264,7 +250,28 @@
         const heading = document.createElement("h3");
         heading.textContent = game.title;
 
-        info.appendChild(heading);
+        // Likes count
+        const likes = document.createElement("div");
+        likes.className = "game-likes";
+        likes.dataset.slug = game.slug;
+        likes.setAttribute("aria-label", "عدد الإعجابات");
+
+        const heart = document.createElement("span");
+        heart.className = "game-likes-icon";
+        heart.setAttribute("aria-hidden", "true");
+        heart.textContent = "💚";
+
+        const count = document.createElement("span");
+        count.className = "game-likes-count";
+        count.textContent = "…";
+
+        const label = document.createElement("span");
+        label.className = "game-likes-label";
+        label.textContent = "إعجاب";
+
+        likes.append(heart, count, label);
+
+        info.append(heading, likes);
         card.append(poster, info);
 
         return card;
@@ -280,8 +287,7 @@
           const files = await discoverGames();
 
           if (files.length === 0) {
-            gamesGrid.textContent =
-              "لا توجد تعريبات متاحة حاليًا.";
+            gamesGrid.textContent = "لا توجد تعريبات متاحة حاليًا.";
             return;
           }
 
@@ -312,11 +318,14 @@
 
                 console.error(
                   `[ARCODEX] فشل تحميل ${filename}:`,
-                  error,
+                  error
                 );
               }
-            }),
+            })
           );
+
+          // تحميل أعداد الإعجابات بعد إنشاء الكروت
+          loadGameLikes();
 
           if (errors.length > 0) {
             errors.sort((a, b) => a.index - b.index);
@@ -332,7 +341,6 @@
 
             gamesGrid.appendChild(error);
           }
-
         } catch (error) {
           console.error("[ARCODEX]", error);
 
@@ -345,13 +353,50 @@
         }
       }
 
+      const LIKE_API =
+        "https://arcodex.emadadeldev.workers.dev/likes";
+
+      async function loadGameLikes() {
+        const elements = document.querySelectorAll(
+          ".game-likes[data-slug]"
+        );
+
+        await Promise.all(
+          Array.from(elements).map(async (element) => {
+            const slug = element.dataset.slug;
+            const count = element.querySelector(".game-likes-count");
+
+            if (!slug || !count) return;
+
+            try {
+              const response = await fetch(
+                `${LIKE_API}?slug=${encodeURIComponent(slug)}`,
+                { cache: "no-store" }
+              );
+
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+              }
+
+              const data = await response.json();
+              count.textContent = data.likes ?? 0;
+            } catch (error) {
+              console.warn(`LOAD LIKES (${slug}):`, error);
+              count.textContent = "0";
+            }
+          })
+        );
+      }
+
       document.addEventListener("DOMContentLoaded", loadGames, {
         once: true,
       });
-
     })();
   </script>
-  <script src="assets/noconsole.js"></script>
+
+  <script src="assets/game-likes.js" defer></script>
+  <script src="assets/noconsole.js" defer></script>
+
 </body>
 
 </html>
