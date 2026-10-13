@@ -253,9 +253,7 @@
     if (!container) return;
 
     const screenshots = game.screenshots || {};
-    const images = Array.isArray(screenshots.images)
-      ? screenshots.images
-      : [];
+    const images = Array.isArray(screenshots.images) ? screenshots.images : [];
     const trailer = safeURL(screenshots.trailer || "");
 
     const fragment = document.createDocumentFragment();
@@ -370,6 +368,30 @@
     return cover || fallback;
   }
 
+  function setGameBackground(imageUrl) {
+    const background = document.querySelector(".game-background-image");
+
+    if (!background || !imageUrl) {
+      return;
+    }
+
+    const image = new Image();
+
+    image.onload = () => {
+      background.style.backgroundImage = `url("${imageUrl}")`;
+
+      requestAnimationFrame(() => {
+        background.classList.add("visible");
+      });
+    };
+
+    image.onerror = () => {
+      background.classList.remove("visible");
+    };
+
+    image.src = imageUrl;
+  }
+
   async function loadGame() {
     const slug = getSlug();
 
@@ -379,13 +401,10 @@
     }
 
     try {
-      const response = await fetch(
-        `games/${encodeURIComponent(slug)}.md`,
-        {
-          cache: "default",
-          credentials: "same-origin",
-        },
-      );
+      const response = await fetch(`games/${encodeURIComponent(slug)}.md`, {
+        cache: "default",
+        credentials: "same-origin",
+      });
 
       if (!response.ok) {
         throw new Error(
@@ -428,6 +447,7 @@
       renderPlatforms(data);
       renderSocialLinks(data);
       renderContributors(data.contributors);
+      setGameBackground(data.cover);
 
       showContent();
 
